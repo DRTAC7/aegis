@@ -1,7 +1,13 @@
 # aegis
 Plaintext Encryption Utility for telehack.com
 
-http://deb10-nyc.underwood.network/~drtac7/aegis.bas
+***AEGIS May be obtained from the following sources:***
+
+1. pub /get drtac7/aegis.bas (requires user account on telehack.com)
+
+2. http://deb10-nyc.underwood.network/~drtac7/aegis.bas
+
+3. This repo
 
 ```
 AEGIS v1.2.2 Encryption Utility for TELEHACK                   
