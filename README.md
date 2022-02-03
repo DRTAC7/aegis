@@ -3,7 +3,7 @@ Plaintext Encryption Utility for telehack.com
 
 ***AEGIS May be obtained from the following sources:***
 
-1. pub /get drtac7/aegis.bas (requires user account on telehack.com)
+1. `pub /get drtac7/aegis.bas` (requires user account on telehack.com)
 
 2. http://deb10-nyc.underwood.network/~drtac7/aegis.bas
 
