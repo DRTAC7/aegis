@@ -3,6 +3,7 @@ Plaintext Encryptin Utility for telehack.com
 
 http://deb10-nyc.underwood.network/~drtac7/aegis.bas
 
+```
 AEGIS v1.2.2 Encryption Utility for TELEHACK                   
                                                                
 %usage: aegis <-function> [filename] [sender/receipient]       
@@ -29,4 +30,6 @@ Examples:  aegis -es forbin
            aegis -s msg forbin                                 
            aegis -a message underwood                          
            aegis -c file                                       
-           aegis -o file                                       
+           aegis -o file   
+``` 
+           
