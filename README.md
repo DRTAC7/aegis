@@ -5,7 +5,7 @@ Plaintext Encryption Utility for telehack.com
 
 1. `pub /get drtac7/aegis.bas` (requires user account on https://www.telehack.com)
 
-2. http://deb10-nyc.underwood.network/~drtac7/aegis.bas
+2. https://www.telehack.com/u/drtac7
 
 3. This repo
 
