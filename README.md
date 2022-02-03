@@ -1,5 +1,5 @@
 # aegis
-Plaintext Encryptin Utility for telehack.com
+Plaintext Encryption Utility for telehack.com
 
 http://deb10-nyc.underwood.network/~drtac7/aegis.bas
 
