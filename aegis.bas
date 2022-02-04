@@ -1,4 +1,4 @@
-   10  ver$ = "1.2.2"
+   10  ver$ = "1.2.5"
    20  goto 890
    30  '
    40  ?
@@ -59,6 +59,7 @@
   590  ? "         -c: print the raw contents of a .ags file to the screen "
   600  ? "         -l: list all .ags files present on disk                 "
   610  ? "         -p: purge all .ags files stored on the disk             "
+  615  ? "         -x: stop all outgoing sends                             "
   620  ? "         -logo: view AEGIS logo and about screen                 "
   630  ? "         -license: display license information                   "
   640  ? "         -faq: view the frequently asked questions message       "
@@ -108,12 +109,13 @@
  1080  if argv$(1) = "-e" then goto 1210
  1090  if argv$(1) = "-d" and argv$(2) <> "" then ef$ = argv$(2) : goto 1750
  1100  if argv$(1) = "-d" then goto 1720
- 1110  if argv$(1) = "-p" then th_exec "rm *.ags" : th_exec "rm *.agsc" : th_exec "rm *.agsk" : print "Terminating AEGIS" : END
+ 1110  if argv$(1) = "-p" then th_exec "rm *.ags" : th_exec "rm *.agsc" : th_exec "rm *.agsk" : goto 3330
  1120  if argv$(1) = "-a" and argv$(2) <> "" and argv$(3) <> "" then goto 2870
  1130  if argv$(1) = "-l" then goto 3030
  1140  if argv$(1) = "-c" and argv$(2) <> "" then goto 2990
  1150  if argv$(1) = "-logo" then goto 740
  1160  if argv$(1) = "-o" and argv$(2) <> "" then goto 3180
+ 1165  if argv$(1) = "-x" then th_exec "send /attach /stop" : goto 3330
  1170  if argv$(1) = "-faq" then goto 320
  1180  if argv$(1) = "-license" then goto 40
  1190  goto 430
@@ -179,7 +181,7 @@
  1790  goto 1770
  1800  close #1
  1810  ' *** SPLIT THE DATA INTO MSG AND KEY ***
- 1820  if cull$ = "" then ? "Encrypted file is corrupted. Delete file and reacquire" : goto 3330
+ 1820  if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : goto 3330
  1830  readmsg$ = ""
  1840  m$ = mid$(cull$, m, 1) 'FATAL ERROR 01: Type 'aegis -faq' for details
  1850  if m$ = " " then m$ = "" : goto 1880
