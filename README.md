@@ -4,7 +4,7 @@ Plaintext Encryption Utility for telehack.com
 ***AEGIS May be obtained from the following sources:***
 
 1. `pub /get drtac7/aegis.bas` (requires a user account on https://www.telehack.com)
-    - AEGIS runs only on telehack. Running the command above is the most direct way to access AEGIS. 
+    - AEGIS runs only on telehack. Running the command above within telehack is the most direct way to access AEGIS. 
 
 2. https://www.telehack.com/u/drtac7
    - I also keep an updated copy of AEGIS here
