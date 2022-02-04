@@ -2,8 +2,8 @@
    20  goto 890
    30  '
    40  ?
-   50  ? " MIT License                                                                           "
-   60  ?
+   50  ? " MIT License                                                                          "
+   60  ? "                                                                                      "
    70  ? " Name:           AEGIS - Plaintext Encryption Utility                                 "
    80  ? " Copyright:      (c) 2022 telehack.com/u/drtac7                                       "
    90  ? " Author:         drtac7                                                               "
@@ -35,20 +35,20 @@
   350  ? "         - the encrypted file is blank                                                                "
   360  ? "         - an error that causes double filetyping (Ex. msg.ags.ags)                                   "
   370  ? "         - (Most common) you included the filetype (.ags, .agsc, .agsk) when naming or calling a file "
-  380  ?
+  380  ? "                                                                                                      "
   390  ? "     FATAL ERROR 02 will occur if:                                                                    "
   400  ? "         - you attempt to name the encrypted file '*'                                                 "
   410  ? "         - you are using a mobile device (may not always occur)                                       "
   420  END
   430  ?
   440  ? " AEGIS v" + ver$ + " Encryption Utility for TELEHACK             "
-  450  ?
+  450  ? "                                                                 "
   460  ? " %usage: aegis <-function> [filename] [sender/receipient]        "
   470  ? "         prefix all functions with -                             "
-  480  ?
+  480  ? "                                                                 "
   490  ? "         DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          "
   500  ? "         WHEN NAMING OR CALLING A FILE!                          "
-  510  ?
+  510  ? "                                                                 "
   520  ? " Availble command line functions:                                "
   530  ? "         -e: encrypt a message and save to disk                  "
   540  ? "         -s: send a pre-encrypted file:                          "
@@ -62,7 +62,7 @@
   620  ? "         -logo: view AEGIS logo and about screen                 "
   630  ? "         -license: display license information                   "
   640  ? "         -faq: view the frequently asked questions message       "
-  650  ?
+  650  ? "                                                                 "
   660  ? " Examples:  aegis -es forbin                                     "
   670  ? "            aegis -s msg forbin                                  "
   680  ? "            aegis -a message underwood                           "
