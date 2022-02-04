@@ -3,14 +3,13 @@ Plaintext Encryption Utility for telehack.com
 
 ***AEGIS May be obtained from the following sources:***
 
-```
 1. `pub /get drtac7/aegis.bas` (requires user account on https://www.telehack.com)
-        - AEGIS is designed specifically for telehack, so this is the most direct way to utilize it.
+    - AEGIS is designed specifically for telehack, so this is the most direct way to utilize it.
 
 2. https://www.telehack.com/u/drtac7
 
-3. This repo, which is meant entirely for publicity and for contributors to make changes to AEGIS as they see fit, so that I can make AEGIS better.
-```
+3. This repo. 
+   - exists solely for publicity and for contributors to further improve AEGIS over time.
 
 ```
 AEGIS v" + ver$ + " Encryption Utility for TELEHACK            
