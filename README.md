@@ -9,6 +9,7 @@ Plaintext Encryption Utility for telehack.com
 2. This repo. 
    - exists solely for publicity and for contributors to further improve AEGIS over time.
 
+```
  AEGIS 2.0 Encryption Utility for TELEHACK             
                                                                  
  %usage: aegis <-function> [filename] [sender/receipient]        
@@ -34,6 +35,7 @@ Plaintext Encryption Utility for telehack.com
             aegis -s msg forbin                                  
             aegis -a message underwood                           
             aegis -c file                                        
-            aegis -o file                                                                            
+            aegis -o file     
+```                                                                       
   
            
