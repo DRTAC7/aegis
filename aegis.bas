@@ -126,7 +126,7 @@
 
     140 'DECRYPT
 
-        'READ DATA FROM FILE AND PUT IT IN CULL$
+            'READ DATA FROM FILE AND PUT IT IN CULL$
         141 print : input "Filename: ", ef$
         142 if ef$ = "" or ef$ = " " then print "%error - blank filename" : goto 141
             open ef$ + ".ags", as #1
@@ -136,8 +136,8 @@
         144 close #1
 
     150 'SPLIT THE DATA INTO MSG AND KEY
-        if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : goto 9999
-        readmsg$ = ""
+            if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : goto 9999
+            readmsg$ = ""
         151 m$ = mid$(cull$, m, 1) 'FATAL ERROR 01: Type 'aegis -faq' for details
             if m$ = " " then m$ = "" : goto 152
             if m$ = "l" then m$ = "" : k$ = "" : m = m + 1 : goto 153
@@ -250,7 +250,7 @@
         goto 9999
 
     190 'MESSAGE INPUT AND CONCEALMENT FUNCTIONS
-        print
+            print
         191 msg$ = "" : print "Message: ";
         192 hide$ = inkey$ : if hide$ = chr$(13) then goto 193
             if (hide$ = chr$(127) or hide$ = chr$(8)) and len(msg$) > 0 then msg$ = left$( msg$, abs( len( msg$ )-1 ) ) : print chr$(8) + " " + chr$(8) ;
@@ -270,10 +270,10 @@
             gosub 120
 
     200 'FILE OUTPUT FUNCTIONS
-        if argv$(1) <> "-e" then goto 201
-        print : print "Save cipher and key separately? (y/N)";
-        keychoice$ = inkey$
-        if keychoice$ = "y" then goto 250
+            if argv$(1) <> "-e" then goto 201
+            print : print "Save cipher and key separately? (y/N)";
+            keychoice$ = inkey$
+            if keychoice$ = "y" then goto 250
         201 open file$ + ".ags", as #1 ' FATAL ERROR 02: type 'aegis -faq' for details
             print# 1, encryptedmsg$ + "l" + otp$ + " "
             close #1
