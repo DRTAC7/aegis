@@ -13,7 +13,7 @@ Plaintext Encryption Utility for Telehack.com
  AEGIS 2.0 Encryption Utility for TELEHACK             
                                                                  
  %usage: aegis <function> [filename] [sender/receipient]        
-         prefix all functions with -                             
+         prefix all functions with -, --, or /                  
                                                                  
          DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          
          WHEN NAMING OR CALLING A FILE!                          
