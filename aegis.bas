@@ -4,7 +4,7 @@
 ' Copyright:      (c) 2022 telehack.com/u/drtac7              \....|..../        
 ' Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
 ' Author:         drtac7                                        \..|../          
-' Contributors:   zcj                                            \.|./           
+' Contributors:   searinox, zcj                                  \.|./           
 ' License:        MIT                                             \|/            
 '                                                                                
 ' Permission is hereby granted, free of charge, to any person obtaining a copy   
