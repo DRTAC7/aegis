@@ -1,3 +1,4 @@
+
 ' MIT License                                               _______________      
 '                                                           \......|....../      
 ' Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
@@ -49,24 +50,24 @@
     40  ?
         ? " AEGIS v" ver$ " Encryption Utility for TELEHACK                 "
         ? "                                                                 "
-        ? " %usage: aegis <-function> [filename] [sender/receipient]        "
+        ? " %usage: aegis <function> [filename] [sender/receipient]         "
         ? "         prefix all functions with -, --, or /                   "
         ? "                                                                 "
         ? "         DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          "
         ? "         WHEN NAMING OR CALLING A FILE!                          "
         ? "                                                                 "
         ? " Availble command line functions:                                "
-        ? "         -e: encrypt a message and save to disk                  "
-        ? "         -s: send a pre-encrypted file:                          "
-        ? "         -es: encrypt a message and send immediately             "
-        ? "         -d: decrypt a message stored on the disk                "
-        ? "         -a: accept an incoming file and decrypt                 "
-        ? "         -o: combine cipher and key file                         "
-        ? "         -c: print the raw contents of a .ags file to the screen "
-        ? "         -l: list all .ags files present on disk                 "
-        ? "         -p: purge all .ags files stored on the disk             "
-        ? "         -x: stop all outgoing sends                             "
-        ? "         -faq: view the frequently asked questions message       "
+        ? "          e: encrypt a message and save to disk                  "
+        ? "          s: send a pre-encrypted file:                          "
+        ? "          es: encrypt a message and send immediately             "
+        ? "          d: decrypt a message stored on the disk                "
+        ? "          a: accept an incoming file and decrypt                 "
+        ? "          o: combine cipher and key file                         "
+        ? "          c: print the raw contents of a .ags file to the screen "
+        ? "          l: list all .ags files present on disk                 "
+        ? "          p: purge all .ags files stored on the disk             "
+        ? "          x: stop all outgoing sends                             "
+        ? "          faq: view the frequently asked questions message       "
         ? "                                                                 "
         ? " Examples:  aegis -es forbin                                     "
         ? "            aegis -s msg forbin                                  "
@@ -99,19 +100,19 @@
         array$(61) = "64" rem =
 
     115 'COMMANDS
-           argv$(1) = th_sed$(argv$(1), "^(-?-|/)")
-        if argv$(1) = "es" and argv$(2) <> "" then to$ = argv$(2) : goto 190
-        if argv$(1) = "s" and argv$(2) <> "" and argv$(3) <> "" then to$ = argv$(3) : goto 240
-        if argv$(1) = "e" then goto 190
-        if argv$(1) = "d" and argv$(2) <> "" then ef$ = argv$(2) : goto 142
-        if argv$(1) = "d" then goto 140
-        if argv$(1) = "p" then th_exec "rm *.ags" : th_exec "rm *.agsc" : th_exec "rm *.agsk" : goto 9999
-        if argv$(1) = "a" and argv$(2) <> "" and argv$(3) <> "" then goto 210
-        if argv$(1) = "l" then goto 230
-        if argv$(1) = "c" and argv$(2) <> "" then goto 220
-        if argv$(1) = "o" and argv$(2) <> "" then goto 260
-        if argv$(1) = "x" then th_exec "send /attach /stop" : goto 9999
-        if argv$(1) = "faq" then goto 30
+           argv$(1) = th_sed$( argv$(1), "^(-?-|/)" )
+        if argv$(1) = "es" or argv$(1) = "se" and argv$(2) <> "" then to$ = argv$(2) : goto 190
+        if th_re( ups$( argv$(1) ), "^S(END)?$" ) and argv$(2) <> "" and argv$(3) <> "" then to$ = argv$(3) : goto 240
+        if th_re( ups$( argv$(1) ), "^E(NCRYPT)?$" ) then goto 190
+        if th_re( ups$( argv$(1) ), "^D(ECRYPT)?$" ) and argv$(2) <> "" then ef$ = argv$(2) : goto 142
+        if th_re( ups$( argv$(1) ), "^D(ECRYPT)?$" ) then goto 140
+        if th_re( ups$( argv$(1) ), "^P(URGE)?$" ) then th_exec "rm *.ags" : th_exec "rm *.agsc" : th_exec "rm *.agsk" : goto 9999
+        if th_re( ups$( argv$(1) ), "^A(CCEPT)?$" ) and argv$(2) <> "" and argv$(3) <> "" then goto 210
+        if th_re( ups$( argv$(1) ), "^L(IST)?$" ) then goto 230
+        if th_re( ups$( argv$(1) ), "^C(ONTENTS)?$" ) and argv$(2) <> "" then goto 220
+        if th_re( ups$( argv$(1) ), "^(O|COMBINE)$" ) and argv$(2) <> "" then goto 260
+        if th_re( ups$( argv$(1) ), "^(X|CANCEL)$" ) then th_exec "send /attach /stop" : goto 9999
+        if th_re( ups$( argv$(1) ), "^(FAQ|HELP|\?)$" ) then goto 30
         goto 40
 
     120 'ENCODE
@@ -176,9 +177,9 @@
             second$ = mid$(dindex$, t + 1, 1)
             both$ = first$ + second$
 
-        'UPPERCASE
+            'UPPERCASE
             if both$ = "00" then t = t + 1 : db64$ = db64$ + ups$("A")
-    	    if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")
+            if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")
             if both$ = "02" then t = t + 1 : db64$ = db64$ + ups$("C")
             if both$ = "03" then t = t + 1 : db64$ = db64$ + ups$("D")
             if both$ = "04" then t = t + 1 : db64$ = db64$ + ups$("E")
@@ -309,9 +310,10 @@
         goto 9999
 
     230 'LIST ALL .AGS FILES
-         ? "--- Embedded files ---" : ? : th_exec "ls *.ags" : ?
-         ? "--- Cipher files ---" : ? : th_exec "ls *.agsc" : ?
-         ? "--- Key files --- " : ? : th_exec "ls *.agsk" : ?
+         no_files$ = "%glob: file not found"
+         ? "--- Embedded files ---" : ? : th_exec "ls *.ags" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
+         ? "--- Cipher files ---" : ? : th_exec "ls *.agsc" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
+         ? "--- Key files --- " : ? : th_exec "ls *.agsk" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
          goto 9999
 
     240 'SEND PRE-ENCRYPTED FILE
