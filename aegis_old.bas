@@ -28,7 +28,7 @@
   250  ? " AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER          "
   260  ? " LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,   "
   270  ? " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE   "
-  280  ? " SOFTWARE.                                                                        "
+  280  ? " SOFTWARE.                                                                       "
   290  '
   300  END
   310  '
