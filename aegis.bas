@@ -4,8 +4,8 @@
 ' Copyright:      (c) 2022 telehack.com/u/drtac7              \....|..../        
 ' Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
 ' Author:         drtac7                                        \..|../          
-' License:        MIT                                            \.|./           
-'                                                                 \|/            
+' Contributors:   zcj                                            \.|./           
+' License:        MIT                                             \|/            
 '                                                                                
 ' Permission is hereby granted, free of charge, to any person obtaining a copy   
 ' of this software and associated documentation files (the "Software"), to deal  
@@ -29,7 +29,7 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.0"
+    10  ver$ = "2.0.1"
         goto 110
 
     30  ?
@@ -47,10 +47,10 @@
         END
 
     40  ?
-        ? " AEGIS v" + ver$ + " Encryption Utility for TELEHACK             "
+        ? " AEGIS v" ver$ " Encryption Utility for TELEHACK                 "
         ? "                                                                 "
         ? " %usage: aegis <-function> [filename] [sender/receipient]        "
-        ? "         prefix all functions with -                             "
+        ? "         prefix all functions with -, --, or /                   "
         ? "                                                                 "
         ? "         DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          "
         ? "         WHEN NAMING OR CALLING A FILE!                          "
@@ -80,57 +80,64 @@
     110 'Generate ASCII Lookup Table for Encoding *** /// provided by searinox
         counter = 0
         for i = 65 to 90
-        tmp$ = str$(counter)
-        if len(tmp$) = 1 then tmp$ = "0" + tmp$
-        array$(i) = tmp$ : counter = counter + 1
-        next i
+            tmp$ = str$(counter)
+            if len(tmp$) = 1 then tmp$ = "0" + tmp$
+            array$(i) = tmp$ : counter = counter + 1
+        next
         for i = 97 to 122
-        tmp$ = str$(counter) : array$(i) = tmp$ : counter = counter + 1
-        next i
+            tmp$ = str$(counter)
+            array$(i) = tmp$
+            counter = counter + 1
+        next
         for i = 48 to 57
-        tmp$ = str$(counter) : array$(i) = tmp$ : counter = counter + 1
-        next i
+            tmp$ = str$(counter)
+            array$(i) = tmp$
+            counter = counter + 1
+        next
         array$(43) = "62" rem +
         array$(47) = "63" rem /
         array$(61) = "64" rem =
 
     115 'COMMANDS
-        if argv$(1) = "-es" and argv$(2) <> "" then to$ = argv$(2) : goto 190
-        if argv$(1) = "-s" and argv$(2) <> "" and argv$(3) <> "" then to$ = argv$(3) : goto 240
-        if argv$(1) = "-e" then goto 190
-        if argv$(1) = "-d" and argv$(2) <> "" then ef$ = argv$(2) : goto 142
-        if argv$(1) = "-d" then goto 140
-        if argv$(1) = "-p" then th_exec "rm *.ags" : th_exec "rm *.agsc" : th_exec "rm *.agsk" : goto 9999
-        if argv$(1) = "-a" and argv$(2) <> "" and argv$(3) <> "" then goto 210
-        if argv$(1) = "-l" then goto 230
-        if argv$(1) = "-c" and argv$(2) <> "" then goto 220
-        if argv$(1) = "-o" and argv$(2) <> "" then goto 260
-        if argv$(1) = "-x" then th_exec "send /attach /stop" : goto 9999
-        if argv$(1) = "-faq" then goto 30
+           argv$(1) = th_sed$(argv$(1), "^(-?-|/)")
+        if argv$(1) = "es" and argv$(2) <> "" then to$ = argv$(2) : goto 190
+        if argv$(1) = "s" and argv$(2) <> "" and argv$(3) <> "" then to$ = argv$(3) : goto 240
+        if argv$(1) = "e" then goto 190
+        if argv$(1) = "d" and argv$(2) <> "" then ef$ = argv$(2) : goto 142
+        if argv$(1) = "d" then goto 140
+        if argv$(1) = "p" then th_exec "rm *.ags" : th_exec "rm *.agsc" : th_exec "rm *.agsk" : goto 9999
+        if argv$(1) = "a" and argv$(2) <> "" and argv$(3) <> "" then goto 210
+        if argv$(1) = "l" then goto 230
+        if argv$(1) = "c" and argv$(2) <> "" then goto 220
+        if argv$(1) = "o" and argv$(2) <> "" then goto 260
+        if argv$(1) = "x" then th_exec "send /attach /stop" : goto 9999
+        if argv$(1) = "faq" then goto 30
         goto 40
 
     120 'ENCODE
-        for e = 1 to len(emsg$) : e$ = mid$(emsg$, e, 1)
-        index$ = index$ + array$(asc(e$))
-        next e
+        for e = 1 to len(emsg$)
+            e$ = mid$(emsg$, e, 1)
+            index$ = index$ + array$(asc(e$))
+        next
 
     130 'ENCRYPT
-        for o = 1 to len(index$) : o$ = mid$(index$, o, 1)
-        key$ = str$(nint(rnd(9)))
-        otp$ = otp$ + key$
-        num% = val(o$) - val(key$)
-        if num% < 0 then num% = num% + 10    
-        encryptedmsg$ = encryptedmsg$ + str$(num%)    
-        next o
+        for o = 1 to len(index$)
+            o$ = mid$(index$, o, 1)
+            key$ = str$(nint(rnd(9)))
+            otp$ = otp$ + key$
+            num% = val(o$) - val(key$)
+            if num% < 0 then num% = num% + 10    
+            encryptedmsg$ = encryptedmsg$ + str$(num%)    
+        next
         return
 
     140 'DECRYPT
 
             'READ DATA FROM FILE AND PUT IT IN CULL$
-        141 print : input "Filename: ", ef$
-        142 if ef$ = "" or ef$ = " " then print "%error - blank filename" : goto 141
+        141 ? : input "Filename: ", ef$
+        142 if ef$ = "" or ef$ = spc$(len(ef$)) then ? "%error - blank filename" : goto 141
             open ef$ + ".ags", as #1
-        143 if eof(1) = -1 then goto 144
+        143 if typ(1) = 3 then goto 144
             input# 1, cull$
             goto 143
         144 close #1
@@ -154,115 +161,115 @@
 
     160 'APPLY MATHS FUNCTIONS TO DECRYPT HASH TO INDEX65
         for V% = 1 to len(readmsg$)
-        rm$ = mid$(readmsg$, V%, 1)
-        rk$ = mid$(readkey$, V%, 1)
-        if V% = len(readkey$) + 1 then goto 161
-        dnum% = val(rm$) + val(rk$)
-        if dnum% >= 10 then dnum% = dnum% - 10
-        dnum$ = dnum$ + str$(dnum%)
-        next V%
+            rm$ = mid$(readmsg$, V%, 1)
+            rk$ = mid$(readkey$, V%, 1)
+            if V% = len(readkey$) + 1 then goto 161
+            dnum% = val(rm$) + val(rk$)
+            if dnum% >= 10 then dnum% = dnum% - 10
+            dnum$ = dnum$ + str$(dnum%)
+        next
     161 dindex$ = dnum$
 
     170 'DECODE
         for t = 1 to len(dindex$)
-        first$ = mid$(dindex$, t, 1)
-        second$ = mid$(dindex$, t + 1, 1)
-        both$ = first$ + second$
+            first$ = mid$(dindex$, t, 1)
+            second$ = mid$(dindex$, t + 1, 1)
+            both$ = first$ + second$
 
         'UPPERCASE
-        if both$ = "00" then t = t + 1 : db64$ = db64$ + ups$("A")
-        if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")
-        if both$ = "02" then t = t + 1 : db64$ = db64$ + ups$("C")
-        if both$ = "03" then t = t + 1 : db64$ = db64$ + ups$("D")
-        if both$ = "04" then t = t + 1 : db64$ = db64$ + ups$("E")
-        if both$ = "05" then t = t + 1 : db64$ = db64$ + ups$("F")
-        if both$ = "06" then t = t + 1 : db64$ = db64$ + ups$("G")
-        if both$ = "07" then t = t + 1 : db64$ = db64$ + ups$("H")
-        if both$ = "08" then t = t + 1 : db64$ = db64$ + ups$("I")
-        if both$ = "09" then t = t + 1 : db64$ = db64$ + ups$("J")
-        if both$ = "10" then t = t + 1 : db64$ = db64$ + ups$("K")
-        if both$ = "11" then t = t + 1 : db64$ = db64$ + ups$("L")
-        if both$ = "12" then t = t + 1 : db64$ = db64$ + ups$("M")
-        if both$ = "13" then t = t + 1 : db64$ = db64$ + ups$("N")
-        if both$ = "14" then t = t + 1 : db64$ = db64$ + ups$("O")
-        if both$ = "15" then t = t + 1 : db64$ = db64$ + ups$("P")
-        if both$ = "16" then t = t + 1 : db64$ = db64$ + ups$("Q")
-        if both$ = "17" then t = t + 1 : db64$ = db64$ + ups$("R")
-        if both$ = "18" then t = t + 1 : db64$ = db64$ + ups$("S")
-        if both$ = "19" then t = t + 1 : db64$ = db64$ + ups$("T")
-        if both$ = "20" then t = t + 1 : db64$ = db64$ + ups$("U")
-        if both$ = "21" then t = t + 1 : db64$ = db64$ + ups$("V")
-        if both$ = "22" then t = t + 1 : db64$ = db64$ + ups$("W")
-        if both$ = "23" then t = t + 1 : db64$ = db64$ + ups$("X")
-        if both$ = "24" then t = t + 1 : db64$ = db64$ + ups$("Y")
-        if both$ = "25" then t = t + 1 : db64$ = db64$ + ups$("Z")
+            if both$ = "00" then t = t + 1 : db64$ = db64$ + ups$("A")
+    	    if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")
+            if both$ = "02" then t = t + 1 : db64$ = db64$ + ups$("C")
+            if both$ = "03" then t = t + 1 : db64$ = db64$ + ups$("D")
+            if both$ = "04" then t = t + 1 : db64$ = db64$ + ups$("E")
+            if both$ = "05" then t = t + 1 : db64$ = db64$ + ups$("F")
+            if both$ = "06" then t = t + 1 : db64$ = db64$ + ups$("G")
+            if both$ = "07" then t = t + 1 : db64$ = db64$ + ups$("H")
+            if both$ = "08" then t = t + 1 : db64$ = db64$ + ups$("I")
+            if both$ = "09" then t = t + 1 : db64$ = db64$ + ups$("J")
+            if both$ = "10" then t = t + 1 : db64$ = db64$ + ups$("K")
+            if both$ = "11" then t = t + 1 : db64$ = db64$ + ups$("L")
+            if both$ = "12" then t = t + 1 : db64$ = db64$ + ups$("M")
+            if both$ = "13" then t = t + 1 : db64$ = db64$ + ups$("N")
+            if both$ = "14" then t = t + 1 : db64$ = db64$ + ups$("O")
+            if both$ = "15" then t = t + 1 : db64$ = db64$ + ups$("P")
+            if both$ = "16" then t = t + 1 : db64$ = db64$ + ups$("Q")
+            if both$ = "17" then t = t + 1 : db64$ = db64$ + ups$("R")
+            if both$ = "18" then t = t + 1 : db64$ = db64$ + ups$("S")
+            if both$ = "19" then t = t + 1 : db64$ = db64$ + ups$("T")
+            if both$ = "20" then t = t + 1 : db64$ = db64$ + ups$("U")
+            if both$ = "21" then t = t + 1 : db64$ = db64$ + ups$("V")
+            if both$ = "22" then t = t + 1 : db64$ = db64$ + ups$("W")
+            if both$ = "23" then t = t + 1 : db64$ = db64$ + ups$("X")
+            if both$ = "24" then t = t + 1 : db64$ = db64$ + ups$("Y")
+            if both$ = "25" then t = t + 1 : db64$ = db64$ + ups$("Z")
 
-        'LOWERCASE
-        if both$ = "26" then t = t + 1 : db64$ = db64$ + "a"
-        if both$ = "27" then t = t + 1 : db64$ = db64$ + "b"
-        if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"
-        if both$ = "29" then t = t + 1 : db64$ = db64$ + "d"
-        if both$ = "30" then t = t + 1 : db64$ = db64$ + "e"
-        if both$ = "31" then t = t + 1 : db64$ = db64$ + "f"
-        if both$ = "32" then t = t + 1 : db64$ = db64$ + "g"
-        if both$ = "33" then t = t + 1 : db64$ = db64$ + "h"
-        if both$ = "34" then t = t + 1 : db64$ = db64$ + "i"
-        if both$ = "35" then t = t + 1 : db64$ = db64$ + "j"
-        if both$ = "36" then t = t + 1 : db64$ = db64$ + "k"
-        if both$ = "37" then t = t + 1 : db64$ = db64$ + "l"
-        if both$ = "38" then t = t + 1 : db64$ = db64$ + "m"
-        if both$ = "39" then t = t + 1 : db64$ = db64$ + "n"
-        if both$ = "40" then t = t + 1 : db64$ = db64$ + "o"
-        if both$ = "41" then t = t + 1 : db64$ = db64$ + "p"
-        if both$ = "42" then t = t + 1 : db64$ = db64$ + "q"
-        if both$ = "43" then t = t + 1 : db64$ = db64$ + "r"
-        if both$ = "44" then t = t + 1 : db64$ = db64$ + "s"
-        if both$ = "45" then t = t + 1 : db64$ = db64$ + "t"
-        if both$ = "46" then t = t + 1 : db64$ = db64$ + "u"
-        if both$ = "47" then t = t + 1 : db64$ = db64$ + "v"
-        if both$ = "48" then t = t + 1 : db64$ = db64$ + "w"
-        if both$ = "49" then t = t + 1 : db64$ = db64$ + "x"
-        if both$ = "50" then t = t + 1 : db64$ = db64$ + "y"
-        if both$ = "51" then t = t + 1 : db64$ = db64$ + "z"
+            'LOWERCASE
+            if both$ = "26" then t = t + 1 : db64$ = db64$ + "a"
+            if both$ = "27" then t = t + 1 : db64$ = db64$ + "b"
+            if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"
+            if both$ = "29" then t = t + 1 : db64$ = db64$ + "d"
+            if both$ = "30" then t = t + 1 : db64$ = db64$ + "e"
+            if both$ = "31" then t = t + 1 : db64$ = db64$ + "f"
+            if both$ = "32" then t = t + 1 : db64$ = db64$ + "g"
+            if both$ = "33" then t = t + 1 : db64$ = db64$ + "h"
+            if both$ = "34" then t = t + 1 : db64$ = db64$ + "i"
+            if both$ = "35" then t = t + 1 : db64$ = db64$ + "j"
+            if both$ = "36" then t = t + 1 : db64$ = db64$ + "k"
+            if both$ = "37" then t = t + 1 : db64$ = db64$ + "l"
+            if both$ = "38" then t = t + 1 : db64$ = db64$ + "m"
+            if both$ = "39" then t = t + 1 : db64$ = db64$ + "n"
+            if both$ = "40" then t = t + 1 : db64$ = db64$ + "o"
+            if both$ = "41" then t = t + 1 : db64$ = db64$ + "p"
+            if both$ = "42" then t = t + 1 : db64$ = db64$ + "q"
+            if both$ = "43" then t = t + 1 : db64$ = db64$ + "r"
+            if both$ = "44" then t = t + 1 : db64$ = db64$ + "s"
+            if both$ = "45" then t = t + 1 : db64$ = db64$ + "t"
+            if both$ = "46" then t = t + 1 : db64$ = db64$ + "u"
+            if both$ = "47" then t = t + 1 : db64$ = db64$ + "v"
+            if both$ = "48" then t = t + 1 : db64$ = db64$ + "w"
+            if both$ = "49" then t = t + 1 : db64$ = db64$ + "x"
+            if both$ = "50" then t = t + 1 : db64$ = db64$ + "y"
+            if both$ = "51" then t = t + 1 : db64$ = db64$ + "z"
 
-        'NUMBERS
-        if both$ = "52" then t = t + 1 : db64$ = db64$ + "0"
-        if both$ = "53" then t = t + 1 : db64$ = db64$ + "1"
-        if both$ = "54" then t = t + 1 : db64$ = db64$ + "2"
-        if both$ = "55" then t = t + 1 : db64$ = db64$ + "3"
-        if both$ = "56" then t = t + 1 : db64$ = db64$ + "4"
-        if both$ = "57" then t = t + 1 : db64$ = db64$ + "5"
-        if both$ = "58" then t = t + 1 : db64$ = db64$ + "6"
-        if both$ = "59" then t = t + 1 : db64$ = db64$ + "7"
-        if both$ = "60" then t = t + 1 : db64$ = db64$ + "8"
-        if both$ = "61" then t = t + 1 : db64$ = db64$ + "9"        
+            'NUMBERS
+            if both$ = "52" then t = t + 1 : db64$ = db64$ + "0"
+            if both$ = "53" then t = t + 1 : db64$ = db64$ + "1"
+            if both$ = "54" then t = t + 1 : db64$ = db64$ + "2"
+            if both$ = "55" then t = t + 1 : db64$ = db64$ + "3"
+            if both$ = "56" then t = t + 1 : db64$ = db64$ + "4"
+            if both$ = "57" then t = t + 1 : db64$ = db64$ + "5"
+            if both$ = "58" then t = t + 1 : db64$ = db64$ + "6"
+            if both$ = "59" then t = t + 1 : db64$ = db64$ + "7"
+            if both$ = "60" then t = t + 1 : db64$ = db64$ + "8"
+            if both$ = "61" then t = t + 1 : db64$ = db64$ + "9"        
 
-        'SPECIAL CHARACTERS
-        if both$ = "62" then t = t + 1 : db64$ = db64$ + "+"
-        if both$ = "63" then t = t + 1 : db64$ = db64$ + "/"
-        if both$ = "64" then t = t + 1 : db64$ = db64$ + "="
-        next t
+            'SPECIAL CHARACTERS
+            if both$ = "62" then t = t + 1 : db64$ = db64$ + "+"
+            if both$ = "63" then t = t + 1 : db64$ = db64$ + "/"
+            if both$ = "64" then t = t + 1 : db64$ = db64$ + "="
+        next
 
     180 'CONVERT Base64 to Plaintext
-        print : print "Decrypted Message: " + th_b64d$(db64$)
-        print
-        sleep 0.5 : th_exec "rm " + ef$ + ".ags"
+        ? : ? "Decrypted Message: " + th_b64d$(db64$)
+        ?
+        sleep 0.5 : scratch ef$ + ".ags" ; out$
         goto 9999
 
     190 'MESSAGE INPUT AND CONCEALMENT FUNCTIONS
-            print
-        191 msg$ = "" : print "Message: ";
+            ?
+        191 msg$ = "" : ? "Message: " ;
         192 hide$ = inkey$ : if hide$ = chr$(13) then goto 193
-            if (hide$ = chr$(127) or hide$ = chr$(8)) and len(msg$) > 0 then msg$ = left$( msg$, abs( len( msg$ )-1 ) ) : print chr$(8) + " " + chr$(8) ;
+            if (hide$ = chr$(127) or hide$ = chr$(8)) and len(msg$) > 0 then msg$ = left$( msg$, abs( len( msg$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hide$ = chr$(127) or hide$ = chr$(8) then goto 192
-            msg$ = msg$ + hide$ : print "*";
+            msg$ = msg$ + hide$ : ? "*" ;
             goto 192
-            print : if len(msg$) < 1 then goto 191
-        193 file$ = "" : print : print "Filename: ";
+            ? : if len(msg$) < 1 then goto 191
+        193 file$ = "" : ? : ? "Filename: " ;
         194 hides$ = inkey$ : if hides$ = chr$(13) then goto 195
-            if (hides$ = chr$(127) or hides$ = chr$(8)) and len(file$) > 0 then file$ = left$( file$, abs( len( file$ )-1 ) ) : print chr$(8) + " " + chr$(8) ;
+            if (hides$ = chr$(127) or hides$ = chr$(8)) and len(file$) > 0 then file$ = left$( file$, abs( len( file$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hides$ = chr$(127) or hides$ = chr$(8) then goto 194
-            file$ = file$ + hides$ : print "*";
+            file$ = file$ + hides$ : ? "*" ;
             goto 194
         195 if len(file$) < 1 then goto 193
             if len(file$) > 3 then ? : ? "Filename must not exceed 3 characters" : goto 193
@@ -270,24 +277,24 @@
             gosub 120
 
     200 'FILE OUTPUT FUNCTIONS
-            if argv$(1) <> "-e" then goto 201
-            print : print "Save cipher and key separately? (y/N)";
+            if argv$(1) <> "e" then goto 201
+            ? : ? "Save cipher and key separately? (y/N)" ;
             keychoice$ = inkey$
             if keychoice$ = "y" then goto 250
         201 open file$ + ".ags", as #1 ' FATAL ERROR 02: type 'aegis -faq' for details
-            print# 1, encryptedmsg$ + "l" + otp$ + " "
+            ?# 1, encryptedmsg$ + "l" + otp$ + " "
             close #1
-            print : th_exec "ls " + file$ + ".ags"
-            if argv$(1) = "-es" then now$ = "y" : goto 203
-            print "Send now? [y/N] "; : now$ = inkey$ : print now$ : if now$ = "y" then goto 202
+            ? : th_exec "ls " + file$ + ".ags"
+            if argv$(1) = "es" then now$ = "y" : goto 203
+            ? "Send now? [y/N] " ; : now$ = inkey$ : ? now$ : if now$ = "y" then goto 202
             goto 9999
-        202 input "To: ", to$ : if to$ = user$ then print "You cannot send a file to yourself! Select another user." : goto 202
-        203 if to$ = user$ then print "You cannot send a file to yourself! Select another user." : goto 202
+        202 input "To: ", to$ : if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
+        203 if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
         204 th_exec "send /attach=" + file$ + ".ags " + to$
-            print "[R]esend if the file transfer fails." : print "[D]elete file, cancel send, and close program." :  print "^C to close. Request to send will persist." : if inkey$ <> "d" then goto 204
+            ? "[R]esend if the file transfer fails." : ? "[D]elete file, cancel send, and close program." :  ? "^C to close. Request to send will persist." : if inkey$ <> "d" then goto 204
             th_exec "send /attach /stop"
-            th_exec "rm " + file$ + ".ags"
-            print "Message File Deleted"
+            scratch file$ + ".ags" ; out$
+            ? "Message File Deleted"
             goto 9999
 
     210 'ACCEPT and DECRYPT
@@ -295,10 +302,10 @@
         ef$ = argv$(2)
         goto 142
     
-    220 'PRINT THE CONTENTS OF A .AGS FILE
+    220 '? THE CONTENTS OF A .AGS FILE
         ? "--- Embedded ---" : ? : th_exec "cat " + argv$(2) + ".ags" : ?
         ? "--- Cipher ---" : ? : th_exec "cat " + argv$(2) + ".agsc" : ?
-        ? "---Key---" : ? : th_exec "cat " + argv$(2) + ".agsk" : ?
+        ? "--- Key ---" : ? : th_exec "cat " + argv$(2) + ".agsk" : ?
         goto 9999
 
     230 'LIST ALL .AGS FILES
@@ -308,39 +315,39 @@
          goto 9999
 
     240 'SEND PRE-ENCRYPTED FILE
-            if argv$(3) = user$ then print "You cannot send a file to yourself! Select another user." : goto 9999
+            if argv$(3) = user$ then ? "You cannot send a file to yourself! Select another user." : goto 9999
         241 th_exec "send /attach=" + argv$(2) + ".ags" + " " +  argv$(3)
-            print "[R]esend if the file transfer fails." : print "[D]elete file and close program." : print "^C to terminate without deleting" : if inkey$ <> "d" then goto 241
-            th_exec "rm " + argv$(2) + ".ags"
-            print "Message File Deleted"
+            ? "[R]esend if the file transfer fails." : ? "[D]elete file and close program." : ? "^C to terminate without deleting" : if inkey$ <> "d" then goto 241
+            scratch argv$(2) + ".ags" ; out$
+            ? "Message File Deleted"
             goto 9999     
     
     250 'SAVE CIPHER AND KEY SEPARATELY
          open file$ + ".agsc", as #1
-         print# 1, encryptedmsg$
+         ?# 1, encryptedmsg$
          close #1
          ? : th_exec "ls " + file$ + ".agsc"
          open file$ + ".agsk", as #1
-         print# 1, otp$
+         ?# 1, otp$
          close #1
          th_exec "ls " + file$ + ".agsk"
          goto 9999
 
     260 'FILE COMBINATION
              open argv$(2) + ".agsc", as #1
-         261 if eof(1) = -1 then goto 262
+         261 if typ(1) = 3 then goto 262
              input# 1, cipher$
              goto 261
          262 close #1
              open argv$(2) + ".agsk", as #1
-         263 if eof(1) = -1 then goto 264
+         263 if typ(1) = 3 then goto 264
              input# 1, otpkey$
              goto 263
          264 close #1
              open argv$(2) + ".ags", as #1
-             print# 1, cipher$ + "l" + otpkey$ + " "
+             ?# 1, cipher$ + "l" + otpkey$ + " "
              close #1
              ? "Files combined as: " : th_exec "ls " + argv$(2) + ".ags"     
              goto 9999
 
-9999 print "Terminating AEGIS" : END 
+9999 ? "Terminating AEGIS" : END
