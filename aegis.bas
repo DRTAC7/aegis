@@ -78,7 +78,7 @@
         
         END
 
-    110 'Generate ASCII Lookup Table for Encoding *** /// provided by searinox
+    110 'Generate ASCII Lookup Table for Encoding /// provided by searinox
         counter = 0
         for i = 65 to 90
             tmp$ = str$(counter)
