@@ -134,7 +134,7 @@
 
     140 'DECRYPT
 
-            'READ DATA FROM FILE AND PUT IT IN CULL$
+        'READ DATA FROM FILE AND PUT IT IN CULL$
         141 ? : input "Filename: ", ef$
         142 if ef$ = "" or ef$ = spc$(len(ef$)) then ? "%error - blank filename" : goto 141
             open ef$ + ".ags", as #1
