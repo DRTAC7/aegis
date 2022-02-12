@@ -30,7 +30,7 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.0.3"
+    10  ver$ = "2.0.4"
         goto 110
 
     30  ?
@@ -254,7 +254,7 @@
     180 'CONVERT Base64 to Plaintext
         ? : ? "Decrypted Message: " + th_b64d$(db64$)
         ?
-        sleep 0.5 : scratch ef$ + ".ags" ; out$
+        sleep 0.5 : th_exec "rm " + ef$ + ".ags" ' scratch ef$ + ".ags" ; out$
         goto 9999
 
     190 'MESSAGE INPUT AND CONCEALMENT FUNCTIONS
