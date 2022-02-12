@@ -4,7 +4,7 @@ Plaintext Encryption Utility for Telehack.com
 ***AEGIS May be obtained from the following sources:***
 
 1. `pub /get drtac7/aegis.bas` (requires a user account on [Telehack](https://www.telehack.com))
-    - AEGIS runs only on Telehack. Running the command above within telehack is the most direct way to access AEGIS. 
+    - AEGIS runs only on Telehack. Running the command above within Telehack is the most direct way to access AEGIS. 
 
 2. This repo. 
    - exists solely for publicity and for contributors to further improve AEGIS over time.
@@ -12,13 +12,13 @@ Plaintext Encryption Utility for Telehack.com
 ```
  AEGIS 2.0 Encryption Utility for TELEHACK             
                                                                  
- %usage: aegis <function> [filename] [sender/receipient]        
+ %usage: aegis <function> [filename] [sender/recipient]        
          prefix all functions with -, --, or /                  
                                                                  
          DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          
          WHEN NAMING OR CALLING A FILE!                          
                                                                  
- Availble command line functions:                                
+ Available command line functions:                                
           e: encrypt a message and save to disk                  
           s: send a pre-encrypted file:                          
           es: encrypt a message and send immediately             
