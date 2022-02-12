@@ -6,7 +6,7 @@
    60  ' Author:         drtac7                                        \..|../
    70  ' Contributors:   searinox, zcj                                  \.|./
    80  '                                                                 \|/
-   90  ver$ = "1.0"
+   90  ver$ = "1.0.1"
   100  goto 110
   110  'Generate ASCII Lookup Table for Encoding /// provided by searinox
   120  counter = 0
@@ -34,8 +34,9 @@
   340  ? "[D]ecrypt"
   350  ?
   360  select$ = inkey$
-  370  if select$ <> "e" then goto 570
-  380  goto 1520
+  365  if select$ = "e" then goto 1520
+  370  if select$ = "d" then goto 570
+  380  goto 310
   390  'ENCODE
   400  for e = 1 to len(emsg$)
   410  e$ = mid$(emsg$, e, 1)
@@ -56,7 +57,7 @@
   560  goto 1640
   570  'DECRYPT
   580  'PROMPT USER FOR INPUT
-  590  input "Message: ", readmsg$
+  590  input "Ciphered Message: ", readmsg$
   600  if readmsg$ = "" then goto 590
   610  input "Key:", readkey$
   620  if readkey$ = "" then goto 610
@@ -162,3 +163,4 @@
  1620  ?
  1630  goto 390
  1640  ? "Terminating AEGIS" : END
+ 1650  ' Type "run" to execute. Type ^C to exit.
