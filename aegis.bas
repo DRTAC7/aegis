@@ -101,7 +101,7 @@
 
     115 'COMMANDS
            argv$(1) = th_sed$( argv$(1), "^(-?-|/)" )
-        if ups$( argv$(1) ) = "ES" or ups$( argv$(1) ) = "SE" and argv$(2) <> "" then to$ = argv$(2) : send_now = 1 : goto 190
+        if th_re( ups$( argv$(1) ), "^(ES|SE)$" ) and argv$(2) <> "" then to$ = argv$(2) : send_now = 1 : goto 190
         if th_re( ups$( argv$(1) ), "^S(END)?$" ) and argv$(2) <> "" and argv$(3) <> "" then to$ = argv$(3) : goto 240
         if th_re( ups$( argv$(1) ), "^E(NCRYPT)?$" ) then goto 190
         if th_re( ups$( argv$(1) ), "^D(ECRYPT)?$" ) and argv$(2) <> "" then ef$ = argv$(2) : goto 142
