@@ -51,7 +51,7 @@
         ? " AEGIS v" ver$ " Encryption Utility for TELEHACK                 "
         ? "                                                                 "
         ? " %usage: aegis <function> [filename] [sender/receipient]         "
-        ? "         prefix all functions with -, --, or /                   "
+        ? "         prefix all functions with -, --, /, or nothing at all   "
         ? "                                                                 "
         ? "         DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          "
         ? "         WHEN NAMING OR CALLING A FILE!                          "
@@ -100,7 +100,7 @@
         array$(61) = "64" rem =
 
     115 'COMMANDS
-           argv$(1) = th_sed$( argv$(1), "^(-?-|/)" )
+        argv$(1) = th_sed$( argv$(1), "^(-?-|/)" )
         if th_re( ups$( argv$(1) ), "^(ES|SE)$" ) and argv$(2) <> "" then to$ = argv$(2) : send_now = 1 : goto 190
         if th_re( ups$( argv$(1) ), "^S(END)?$" ) and argv$(2) <> "" and argv$(3) <> "" then to$ = argv$(3) : goto 240
         if th_re( ups$( argv$(1) ), "^E(NCRYPT)?$" ) then goto 190
