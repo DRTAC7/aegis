@@ -30,7 +30,7 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.0.6"
+    10  ver$ = "2.0.5"
         goto 110
 
     30  ?
