@@ -12,7 +12,7 @@ Plaintext Encryption Utility for Telehack.com
 ```
  AEGIS 2.0 Encryption Utility for TELEHACK             
                                                                  
- %usage: run aegis.bas <function> [filename] [sender/recipient]        
+ %usage: aegis <function> [filename] [sender/recipient]        
          prefix all functions with -, --, /, or nothing at all.           
                                                                  
          DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          
