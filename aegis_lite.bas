@@ -6,7 +6,7 @@
    60  ' Author:         drtac7                                        \..|../
    70  ' Contributors:   searinox, zcj                                  \.|./
    80  '                                                                 \|/
-   90  ver$ = "1.0.1"
+   90  ver$ = "1.0.2"
   100  goto 110
   110  ' Generate ASCII Lookup Table for Encoding /// provided by searinox
   120  counter = 0
