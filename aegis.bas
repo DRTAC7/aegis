@@ -48,37 +48,37 @@
         END
 
     40  ?
-        ? " AEGIS v" ver$ " Encryption Utility for TELEHACK                 "
-        ? "                                                                 "
-        ? " %usage: aegis <function> [filename] [sender/receipient]         "
-        ? "         prefix all functions with -, --, /, or nothing at all   "
-        ? "                                                                 "
-        ? "         DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)          "
-        ? "         WHEN NAMING OR CALLING A FILE!                          "
-        ? "                                                                 "
-        ? " Availble command line functions:                                "
-        ? "          e: encrypt a message and save to disk                  "
-        ? "          s: send a pre-encrypted file:                          "
-        ? "          es: encrypt a message and send immediately             "
-        ? "          d: decrypt a message stored on the disk                "
-        ? "          a: accept an incoming file and decrypt                 "
-        ? "          o: combine cipher and key file                         "
-        ? "          c: print the raw contents of a .ags file to the screen "
-        ? "          l: list all .ags files present on disk                 "
-        ? "          p: purge all .ags files stored on the disk             "
-        ? "          x: stop all outgoing sends                             "
-        ? "          faq: view the frequently asked questions message       "
-        ? "                                                                 "
-        ? " Examples:  aegis -es forbin                                     "
-        ? "            aegis -s msg forbin                                  "
-        ? "            aegis -a message underwood                           "
-        ? "            aegis -c file                                        "
-        ? "            aegis -o file                                        "
+        ? " AEGIS v" ver$ " Encryption Utility for TELEHACK                   "
+        ? "                                                                   "
+        ? " %usage: aegis <function> [filename] [sender/receipient]           "
+        ? "         prefix all functions with -, --, /, or nothing at all     "
+        ? "                                                                   "
+        ? "         DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)            "
+        ? "         WHEN NAMING OR CALLING A FILE!                            "
+        ? "                                                                   "
+        ? " Availble command line functions:                                  "
+        ? "          e:   encrypt a message and save to disk                  "
+        ? "          s:   send a pre-encrypted file:                          "
+        ? "          es:  encrypt a message and send immediately              "
+        ? "          d:   decrypt a message stored on the disk                "
+        ? "          a:   accept an incoming file and decrypt                 "
+        ? "          o:   combine cipher and key file                         "
+        ? "          c:   print the raw contents of a .ags file to the screen "
+        ? "          l:   list all .ags files present on disk                 "
+        ? "          p:   purge all .ags files stored on the disk             "
+        ? "          x:   stop all outgoing sends                             "
+        ? "          faq: view the frequently asked questions message         "
+        ? "                                                                   "
+        ? " Examples:  run aegis.bas -es forbin                               "
+        ? "            run aegis.bas -s msg forbin                            "
+        ? "            run aegis.bas -a message underwood                     "
+        ? "            run aegis.bas -c file                                  "
+        ? "            run aegis.bas -o file                                  "
         ?
         
         END
 
-    110 'Generate ASCII Lookup Table for Encoding /// provided by searinox
+    110 ' Generate ASCII Lookup Table for Encoding /// provided by searinox
         counter = 0
         for i = 65 to 90
             tmp$ = str$(counter)
@@ -95,11 +95,11 @@
             array$(i) = tmp$
             counter = counter + 1
         next
-        array$(43) = "62" rem +
-        array$(47) = "63" rem /
-        array$(61) = "64" rem =
+        array$(43) = "62" ' +
+        array$(47) = "63" ' /
+        array$(61) = "64" ' =
 
-    115 'COMMANDS
+    115 ' COMMANDS
         argv$(1) = th_sed$( argv$(1), "^(-?-|/)" )
         if th_re( ups$( argv$(1) ), "^(ES|SE)$" ) and argv$(2) <> "" then to$ = argv$(2) : send_now = 1 : goto 190
         if th_re( ups$( argv$(1) ), "^S(END)?$" ) and argv$(2) <> "" and argv$(3) <> "" then to$ = argv$(3) : goto 240
@@ -115,13 +115,13 @@
         if th_re( ups$( argv$(1) ), "^(FAQ|HELP|\?)$" ) then goto 30
         goto 40
 
-    120 'ENCODE
+    120 ' ENCODE
         for e = 1 to len(emsg$)
             e$ = mid$(emsg$, e, 1)
             index$ = index$ + array$(asc(e$))
         next
 
-    130 'ENCRYPT
+    130 ' ENCRYPT
         for o = 1 to len(index$)
             o$ = mid$(index$, o, 1)
             key$ = str$(nint(rnd(9)))
@@ -132,9 +132,9 @@
         next
         return
 
-    140 'DECRYPT
+    140 ' DECRYPT
 
-        'READ DATA FROM FILE AND PUT IT IN CULL$
+        ' READ DATA FROM FILE AND PUT IT IN CULL$
         141 ? : input "Filename: ", ef$
         142 if ef$ = "" or ef$ = spc$(len(ef$)) then ? "%error - blank filename" : goto 141
             open ef$ + ".ags", as #1
@@ -143,10 +143,10 @@
             goto 143
         144 close #1
 
-    150 'SPLIT THE DATA INTO MSG AND KEY
+    150 ' SPLIT THE DATA INTO MSG AND KEY
             if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : goto 9999
             readmsg$ = ""
-        151 m$ = mid$(cull$, m, 1) 'FATAL ERROR 01: Type 'aegis -faq' for details
+        151 m$ = mid$(cull$, m, 1) : ' FATAL ERROR 01: Type 'aegis -faq' for details
             if m$ = " " then m$ = "" : goto 152
             if m$ = "l" then m$ = "" : k$ = "" : m = m + 1 : goto 153
             readmsg$ = readmsg$ + m$
@@ -160,7 +160,7 @@
             k = k + 1
             goto 154
 
-    160 'APPLY MATHS FUNCTIONS TO DECRYPT HASH TO INDEX65
+    160 ' APPLY MATHS FUNCTIONS TO DECRYPT HASH TO INDEX65
         for V% = 1 to len(readmsg$)
             rm$ = mid$(readmsg$, V%, 1)
             rk$ = mid$(readkey$, V%, 1)
@@ -171,13 +171,13 @@
         next
     161 dindex$ = dnum$
 
-    170 'DECODE
+    170 ' DECODE
         for t = 1 to len(dindex$)
             first$ = mid$(dindex$, t, 1)
             second$ = mid$(dindex$, t + 1, 1)
             both$ = first$ + second$
 
-            'UPPERCASE
+            ' UPPERCASE
             if both$ = "00" then t = t + 1 : db64$ = db64$ + ups$("A")
             if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")
             if both$ = "02" then t = t + 1 : db64$ = db64$ + ups$("C")
@@ -205,7 +205,7 @@
             if both$ = "24" then t = t + 1 : db64$ = db64$ + ups$("Y")
             if both$ = "25" then t = t + 1 : db64$ = db64$ + ups$("Z")
 
-            'LOWERCASE
+            ' LOWERCASE
             if both$ = "26" then t = t + 1 : db64$ = db64$ + "a"
             if both$ = "27" then t = t + 1 : db64$ = db64$ + "b"
             if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"
@@ -233,7 +233,7 @@
             if both$ = "50" then t = t + 1 : db64$ = db64$ + "y"
             if both$ = "51" then t = t + 1 : db64$ = db64$ + "z"
 
-            'NUMBERS
+            ' NUMBERS
             if both$ = "52" then t = t + 1 : db64$ = db64$ + "0"
             if both$ = "53" then t = t + 1 : db64$ = db64$ + "1"
             if both$ = "54" then t = t + 1 : db64$ = db64$ + "2"
@@ -245,19 +245,19 @@
             if both$ = "60" then t = t + 1 : db64$ = db64$ + "8"
             if both$ = "61" then t = t + 1 : db64$ = db64$ + "9"        
 
-            'SPECIAL CHARACTERS
+            ' SPECIAL CHARACTERS
             if both$ = "62" then t = t + 1 : db64$ = db64$ + "+"
             if both$ = "63" then t = t + 1 : db64$ = db64$ + "/"
             if both$ = "64" then t = t + 1 : db64$ = db64$ + "="
         next
 
-    180 'CONVERT Base64 to Plaintext
+    180 ' CONVERT Base64 to Plaintext
         ? : ? "Decrypted Message: " + th_b64d$(db64$)
         ?
         sleep 0.5 : th_exec "rm " + ef$ + ".ags" ' scratch ef$ + ".ags" ; out$
         goto 9999
 
-    190 'MESSAGE INPUT AND CONCEALMENT FUNCTIONS
+    190 ' MESSAGE INPUT AND CONCEALMENT FUNCTIONS
             ?
         191 msg$ = "" : ? "Message: " ;
         192 hide$ = inkey$ : if hide$ = chr$(13) then goto 193
@@ -277,12 +277,12 @@
             emsg$ = th_b64e$(msg$)
             gosub 120
 
-    200 'FILE OUTPUT FUNCTIONS
+    200 ' FILE OUTPUT FUNCTIONS
             if ups$( argv$(1) ) <> "E" then goto 201
             ? : ? "Save cipher and key separately? (y/N)" ;
             keychoice$ = inkey$
             if keychoice$ = "y" then goto 250
-        201 open file$ + ".ags", as #1 ' FATAL ERROR 02: type 'aegis -faq' for details
+        201 open file$ + ".ags", as #1 : ' FATAL ERROR 02: type 'aegis -faq' for details
             ?# 1, encryptedmsg$ + "l" + otp$ + " "
             close #1
             ? : th_exec "ls " + file$ + ".ags"
@@ -298,25 +298,25 @@
             ? "Message File Deleted"
             goto 9999
 
-    210 'ACCEPT and DECRYPT
+    210 ' ACCEPT and DECRYPT
         th_exec "send /accept=" + argv$(2) + ".ags " + argv$(3)
         ef$ = argv$(2)
         goto 142
     
-    220 '? THE CONTENTS OF A .AGS FILE
+    220 ' ? THE CONTENTS OF A .AGS FILE
         ? "--- Embedded ---" : ? : th_exec "cat " + argv$(2) + ".ags" : ?
         ? "--- Cipher ---" : ? : th_exec "cat " + argv$(2) + ".agsc" : ?
         ? "--- Key ---" : ? : th_exec "cat " + argv$(2) + ".agsk" : ?
         goto 9999
 
-    230 'LIST ALL .AGS FILES
+    230 ' LIST ALL .AGS FILES
          no_files$ = "%glob: file not found"
          ? "--- Embedded files ---" : ? : th_exec "ls *.ags" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
          ? "--- Cipher files ---" : ? : th_exec "ls *.agsc" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
          ? "--- Key files --- " : ? : th_exec "ls *.agsk" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
          goto 9999
 
-    240 'SEND PRE-ENCRYPTED FILE
+    240 ' SEND PRE-ENCRYPTED FILE
             if argv$(3) = user$ then ? "You cannot send a file to yourself! Select another user." : goto 9999
         241 th_exec "send /attach=" + argv$(2) + ".ags" + " " +  argv$(3)
             ? "[R]esend if the file transfer fails." : ? "[D]elete file and close program." : ? "^C to terminate without deleting" : if inkey$ <> "d" then goto 241
@@ -324,7 +324,7 @@
             ? "Message File Deleted"
             goto 9999     
     
-    250 'SAVE CIPHER AND KEY SEPARATELY
+    250 ' SAVE CIPHER AND KEY SEPARATELY
          open file$ + ".agsc", as #1
          ?# 1, encryptedmsg$
          close #1
@@ -335,7 +335,7 @@
          th_exec "ls " + file$ + ".agsk"
          goto 9999
 
-    260 'FILE COMBINATION
+    260 ' FILE COMBINATION
              open argv$(2) + ".agsc", as #1
          261 if typ(1) = 3 then goto 262
              input# 1, cipher$

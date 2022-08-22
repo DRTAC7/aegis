@@ -8,7 +8,7 @@
    80  '                                                                 \|/
    90  ver$ = "1.0.1"
   100  goto 110
-  110  'Generate ASCII Lookup Table for Encoding /// provided by searinox
+  110  ' Generate ASCII Lookup Table for Encoding /// provided by searinox
   120  counter = 0
   130  for i = 65 to 90
   140  tmp$ = str$(counter)
@@ -25,10 +25,10 @@
   250  array$(i) = tmp$
   260  counter = counter + 1
   270  next
-  280  array$(43) = "62" rem +
-  290  array$(47) = "63" rem /
-  300  array$(61) = "64" rem =
-  310  'MENU
+  280  array$(43) = "62" : ' +
+  290  array$(47) = "63" : ' /
+  300  array$(61) = "64" : ' =
+  310  ' MENU
   320  ?
   330  ? "[E]ncrypt"
   340  ? "[D]ecrypt"
@@ -37,12 +37,12 @@
   365  if select$ = "e" then goto 1520
   370  if select$ = "d" then goto 570
   380  goto 310
-  390  'ENCODE
+  390  ' ENCODE
   400  for e = 1 to len(emsg$)
   410  e$ = mid$(emsg$, e, 1)
   420  index$ = index$ + array$(asc(e$))
   430  next
-  440  'ENCRYPT
+  440  ' ENCRYPT
   450  for o = 1 to len(index$)
   460  o$ = mid$(index$, o, 1)
   470  key$ = str$(nint(rnd(9)))
@@ -51,17 +51,17 @@
   500  if num% < 0 then num% = num% + 10
   510  encryptedmsg$ = encryptedmsg$ + str$(num%)
   520  next
-  530  'PRINT ENCRYPTED MESSAGE AND KEY TO SCREEN
+  530  ' PRINT ENCRYPTED MESSAGE AND KEY TO SCREEN
   540  ? "Encrypted message: " encryptedmsg$
   550  ? "Decryption key: " + otp$
   560  goto 1640
-  570  'DECRYPT
-  580  'PROMPT USER FOR INPUT
+  570  ' DECRYPT
+  580  ' PROMPT USER FOR INPUT
   590  input "Ciphered Message: ", readmsg$
   600  if readmsg$ = "" then goto 590
   610  input "Key:", readkey$
   620  if readkey$ = "" then goto 610
-  630  'APPLY MATHS FUNCTIONS TO DECRYPT HASH TO INDEX65
+  630  ' APPLY MATHS FUNCTIONS TO DECRYPT HASH TO INDEX65
   640  for V% = 1 to len(readmsg$)
   650  rm$ = mid$(readmsg$, V%, 1)
   660  rk$ = mid$(readkey$, V%, 1)
@@ -71,12 +71,12 @@
   700  dnum$ = dnum$ + str$(dnum%)
   710  next
   720  dindex$ = dnum$
-  730  'DECODE
+  730  ' DECODE
   740  for t = 1 to len(dindex$)
   750  first$ = mid$(dindex$, t, 1)
   760  second$ = mid$(dindex$, t + 1, 1)
   770  both$ = first$ + second$
-  780  'UPPERCASE
+  780  ' UPPERCASE
   790  if both$ = "00" then t = t + 1 : db64$ = db64$ + ups$("A")
   800  if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")
   810  if both$ = "02" then t = t + 1 : db64$ = db64$ + ups$("C")
@@ -103,7 +103,7 @@
  1020  if both$ = "23" then t = t + 1 : db64$ = db64$ + ups$("X")
  1030  if both$ = "24" then t = t + 1 : db64$ = db64$ + ups$("Y")
  1040  if both$ = "25" then t = t + 1 : db64$ = db64$ + ups$("Z")
- 1050  'LOWERCASE
+ 1050  ' LOWERCASE
  1060  if both$ = "26" then t = t + 1 : db64$ = db64$ + "a"
  1070  if both$ = "27" then t = t + 1 : db64$ = db64$ + "b"
  1080  if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"
@@ -130,7 +130,7 @@
  1290  if both$ = "49" then t = t + 1 : db64$ = db64$ + "x"
  1300  if both$ = "50" then t = t + 1 : db64$ = db64$ + "y"
  1310  if both$ = "51" then t = t + 1 : db64$ = db64$ + "z"
- 1320  'NUMBERS
+ 1320  ' NUMBERS
  1330  if both$ = "52" then t = t + 1 : db64$ = db64$ + "0"
  1340  if both$ = "53" then t = t + 1 : db64$ = db64$ + "1"
  1350  if both$ = "54" then t = t + 1 : db64$ = db64$ + "2"
@@ -141,16 +141,16 @@
  1400  if both$ = "59" then t = t + 1 : db64$ = db64$ + "7"
  1410  if both$ = "60" then t = t + 1 : db64$ = db64$ + "8"
  1420  if both$ = "61" then t = t + 1 : db64$ = db64$ + "9"
- 1430  'SPECIAL CHARACTERS
+ 1430  ' SPECIAL CHARACTERS
  1440  if both$ = "62" then t = t + 1 : db64$ = db64$ + "+"
  1450  if both$ = "63" then t = t + 1 : db64$ = db64$ + "/"
  1460  if both$ = "64" then t = t + 1 : db64$ = db64$ + "="
  1470  next
- 1480  'CONVERT Base64 to Plaintext
+ 1480  ' CONVERT Base64 to Plaintext
  1490  ? : ? "Decrypted Message: " + th_b64d$(db64$)
  1500  ?
  1510  goto 1640
- 1520  'MESSAGE INPUT AND CONCEALMENT FUNCTIONS
+ 1520  ' MESSAGE INPUT AND CONCEALMENT FUNCTIONS
  1530  ?
  1540  msg$ = "" : ? "Message: " ;
  1550  hide$ = inkey$ : if hide$ = chr$(13) then goto 1610
