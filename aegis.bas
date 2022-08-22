@@ -69,11 +69,11 @@
         ? "          x:   stop all outgoing sends                             "
         ? "          faq: view the frequently asked questions message         "
         ? "                                                                   "
-        ? " Examples:  run aegis.bas -es forbin                               "
-        ? "            run aegis.bas -s msg forbin                            "
-        ? "            run aegis.bas -a message underwood                     "
-        ? "            run aegis.bas -c file                                  "
-        ? "            run aegis.bas -o file                                  "
+        ? " Examples:  aegis -es forbin                                       "
+        ? "            aegis -s msg forbin                                    "
+        ? "            aegis -a message underwood                             "
+        ? "            aegis -c file                                          "
+        ? "            aegis -o file                                          "
         ?
         
         END
