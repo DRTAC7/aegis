@@ -21,8 +21,8 @@ Plaintext Encryption Utility for Telehack.com
  Available command line functions:                                
           e:   encrypt a message and save to disk                  
           s:   send a pre-encrypted file:                          
-          se:
           es:  encrypt a message and send immediately             
+          se:  same as es
           d:   decrypt a message stored on the disk                
           a:   accept an incoming file and decrypt                 
           o:   combine cipher and key file                         
