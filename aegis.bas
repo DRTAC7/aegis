@@ -106,7 +106,7 @@
         if th_re( ups$( argv$(1) ), "^E(NCRYPT)?$" ) then goto 190
         if th_re( ups$( argv$(1) ), "^D(ECRYPT)?$" ) and argv$(2) <> "" then ef$ = argv$(2) : goto 142
         if th_re( ups$( argv$(1) ), "^D(ECRYPT)?$" ) then goto 140
-        if th_re( ups$( argv$(1) ), "^P(URGE)?$" ) then th_exec "rm *.ags" : th_exec "rm *.agsc" : th_exec "rm *.agsk" : goto 9999
+        if th_re( ups$( argv$(1) ), "^P(URGE)?$" ) then goto 270
         if th_re( ups$( argv$(1) ), "^A(CCEPT)?$" ) and argv$(2) <> "" and argv$(3) <> "" then goto 210
         if th_re( ups$( argv$(1) ), "^L(IST)?$" ) then goto 230
         if th_re( ups$( argv$(1) ), "^C(ONTENTS)?$" ) and argv$(2) <> "" then goto 220
@@ -351,5 +351,15 @@
              close #1
              ? "Files combined as: " : th_exec "ls " + argv$(2) + ".ags"     
              goto 9999
+
+    270 ' PURGE
+             ext$ = ".ags" : gosub 271
+             ext$ = ".agsc" : gosub 271
+             ext$ = ".agsk" : gosub 271
+             goto 9999
+         271 th_exec "ls *" + ext$ ; out$
+             if th_re( out$, "%glob" ) then ? "?no " ext$ " files found" : return
+             th_exec "rm *" + ext$
+             return
 
 9999 ? "Terminating AEGIS" : END
