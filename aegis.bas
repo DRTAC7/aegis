@@ -358,7 +358,7 @@
              ext$ = ".agsk" : gosub 271
              goto 9999
          271 th_exec "ls *" + ext$ ; out$
-             if th_re( out$, "%glob" ) then ? "?no " ext$ " files found" : return
+             if th_re( out$, "%glob" ) then ? " no " ext$ " files found" : return
              th_exec "rm *" + ext$
              return
 
