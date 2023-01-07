@@ -30,7 +30,7 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.0.7"
+    10  ver$ = "2.0.8"
         goto 110
 
     30  ?
@@ -311,9 +311,9 @@
 
     230 ' LIST ALL .AGS FILES
          no_files$ = "%glob: file not found"
-         ? "--- Embedded files ---" : ? : th_exec "ls *.ags" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
-         ? "--- Cipher files ---" : ? : th_exec "ls *.agsc" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
-         ? "--- Key files --- " : ? : th_exec "ls *.agsk" ; out$ : ? th_sed$(out$, no_files$, "?no aegis files found")
+         ? "--- Embedded files ---" : ? : th_exec "ls *.ags" ; out$ : ? th_sed$(out$, no_files$, "%no aegis files found")
+         ? "--- Cipher files ---" : ? : th_exec "ls *.agsc" ; out$ : ? th_sed$(out$, no_files$, "%no aegis files found")
+         ? "--- Key files --- " : ? : th_exec "ls *.agsk" ; out$ : ? th_sed$(out$, no_files$, "%no aegis files found")
          goto 9999
 
     240 ' SEND PRE-ENCRYPTED FILE
@@ -358,7 +358,7 @@
              ext$ = ".agsk" : gosub 271
              goto 9999
          271 th_exec "ls *" + ext$ ; out$
-             if th_re( out$, "%glob" ) then ? " no " ext$ " files found" : return
+             if th_re( out$, "%glob" ) then ? "%no " ext$ " files found" : return
              th_exec "rm *" + ext$
              return
 
