@@ -289,7 +289,7 @@
             if send_now then now$ = "y" : goto 203
             ? "Send now? [y/N] " ; : now$ = inkey$ : ? now$ : if now$ = "y" then goto 202
             goto 9999
-        202 input "To: ", to$ : if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
+        202 input "To: ", to$ : if to$ = "" then ? "You must select a user!" : goto 202 : if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
         203 if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
         204 th_exec "send /attach=" + file$ + ".ags " + to$
             ? "[R]esend if the file transfer fails." : ? "[D]elete file, cancel send, and close program." :  ? "^C to close. Request to send will persist." : if inkey$ <> "d" then goto 204
