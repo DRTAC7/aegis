@@ -2,7 +2,7 @@
 ' MIT License                                               _______________      
 '                                                           \......|....../      
 ' Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
-' Copyright:      (c) 2022 telehack.com/u/drtac7              \....|..../        
+' Copyright:      (c) 2023 telehack.com/u/drtac7              \....|..../        
 ' Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
 ' Author:         drtac7                                        \..|../          
 ' Contributors:   searinox, zcj                                  \.|./           
