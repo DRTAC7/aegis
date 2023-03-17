@@ -30,7 +30,8 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.0.9"
+    10  ver$ = "2.1.0"
+        index65Mode% = 1
         goto 110
 
     30  ?
@@ -120,6 +121,7 @@
             e$ = mid$(emsg$, e, 1)
             index$ = index$ + array$(asc(e$))
         next
+        ? : if index65Mode% = 1 then ? "Index 65 Hash: " + index$
 
     130 ' ENCRYPT
         for o = 1 to len(index$)
@@ -170,6 +172,7 @@
             dnum$ = dnum$ + str$(dnum%)
         next
     161 dindex$ = dnum$
+        if index65Mode% = 1 then ? : ? "Index65 Hash: " + dindex$
 
     170 ' DECODE
         for t = 1 to len(dindex$)
