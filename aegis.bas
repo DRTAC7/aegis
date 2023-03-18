@@ -30,8 +30,8 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.1.0"
-        index65Mode% = 1
+    10  ver$ = "2.1.1"
+        index65Mode% = 0
         goto 110
 
     30  ?
@@ -76,7 +76,7 @@
         ? "            aegis -c file                                          "
         ? "            aegis -o file                                          "
         ?
-        
+        if index65Mode% = 1 then ? "INDEX 65 MODE ENABLED"        
         END
 
     110 ' Generate ASCII Lookup Table for Encoding /// provided by searinox
