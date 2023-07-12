@@ -1,4 +1,6 @@
 # AEGIS
+![TeleBASIC](https://raw.githubusercontent.com/telehack-foundation/.github/main/profile/svg/telebasic.svg)
+
 Plaintext Encryption Utility for Telehack.com
 
 ***AEGIS May be obtained from the following sources:***
