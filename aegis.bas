@@ -30,8 +30,9 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.1.1"
-        index65Mode% = 0
+    10  ver$ = "2.1.2"
+        DEBUG64% = 1
+        DEBUG65% = 1
         goto 110
 
     30  ?
@@ -76,7 +77,9 @@
         ? "            aegis -c file                                          "
         ? "            aegis -o file                                          "
         ?
-        if index65Mode% = 1 then ? "INDEX 65 MODE ENABLED"        
+        
+        if debug65% = 1 then ? "            Index 65 Debug Enabled"
+        if debug64% = 1 then ? "            Base64 Debug Enabled" : ?        
         END
 
     110 ' Generate ASCII Lookup Table for Encoding /// provided by searinox
@@ -121,7 +124,7 @@
             e$ = mid$(emsg$, e, 1)
             index$ = index$ + array$(asc(e$))
         next
-        ? : if index65Mode% = 1 then ? "Index 65 Hash: " + index$
+        if DEBUG65% = 1 then ? : ? "Index 65 Hash: " + index$
 
     130 ' ENCRYPT
         for o = 1 to len(index$)
@@ -172,7 +175,7 @@
             dnum$ = dnum$ + str$(dnum%)
         next
     161 dindex$ = dnum$
-        if index65Mode% = 1 then ? : ? "Index65 Hash: " + dindex$
+        if DEBUG65% = 1 then ? : ? "Index65 Hash: " + dindex$
 
     170 ' DECODE
         for t = 1 to len(dindex$)
@@ -255,6 +258,7 @@
         next
 
     180 ' CONVERT Base64 to Plaintext
+        if DEBUG64% = 1 then ? : ? "Base64: " + db64$
         ? : ? "Decrypted Message: " + th_b64d$(db64$)
         ?
         sleep 0.5 : th_exec "rm " + ef$ + ".ags" ' scratch ef$ + ".ags" ; out$
@@ -278,6 +282,7 @@
         195 if len(file$) < 1 then goto 193
             if len(file$) > 3 then ? : ? "Filename must not exceed 3 characters" : goto 193
             emsg$ = th_b64e$(msg$)
+            if DEBUG64% = 1 then ? : ? "Base64: " + emsg$
             gosub 120
 
     200 ' FILE OUTPUT FUNCTIONS
