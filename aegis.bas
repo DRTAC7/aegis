@@ -31,8 +31,8 @@
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
     10  ver$ = "2.1.2"
-        DEBUG64% = 1
-        DEBUG65% = 1
+        DEBUG64% = 0
+        DEBUG65% = 0
         goto 110
 
     30  ?
