@@ -30,7 +30,7 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.1.2"
+    10  ver$ = "2.1.5"
         DEBUG64% = 0
         DEBUG65% = 0
         goto 110
@@ -143,13 +143,14 @@
         141 ? : input "Filename: ", ef$
         142 if ef$ = "" or ef$ = spc$(len(ef$)) then ? "%error - blank filename" : goto 141
             open ef$ + ".ags", as #1
+            fatalerroronedebug$ = ef$ + ".ags"
         143 if typ(1) = 3 then goto 144
             input# 1, cull$
             goto 143
         144 close #1
 
     150 ' SPLIT THE DATA INTO MSG AND KEY
-            if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : goto 9999
+            if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : scratch fatalerroronedebug$ ; out$ : goto 9999
             readmsg$ = ""
         151 m$ = mid$(cull$, m, 1) : ' FATAL ERROR 01: Type 'aegis -faq' for details
             if m$ = " " then m$ = "" : goto 152
@@ -299,7 +300,7 @@
             goto 9999
         202 input "To: ", to$ : if to$ = "" then ? "You must select a user!" : goto 202 : if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
         203 if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
-        204 th_exec "send /attach=" + file$ + ".ags " + to$
+        204 th_exec "send /bell /attach=" + file$ + ".ags " + to$
             ? "[R]esend if the file transfer fails." : ? "[D]elete file, cancel send, and close program." :  ? "^C to close. Request to send will persist." : if inkey$ <> "d" then goto 204
             th_exec "send /attach /stop"
             scratch file$ + ".ags" ; out$
@@ -326,8 +327,9 @@
 
     240 ' SEND PRE-ENCRYPTED FILE
             if argv$(3) = user$ then ? "You cannot send a file to yourself! Select another user." : goto 9999
-        241 th_exec "send /attach=" + argv$(2) + ".ags" + " " +  argv$(3)
-            ? "[R]esend if the file transfer fails." : ? "[D]elete file and close program." : ? "^C to terminate without deleting" : if inkey$ <> "d" then goto 241
+        241 th_exec "send /bell /attach=" + argv$(2) + ".ags" + " " +  argv$(3)
+            ? "[R]esend if the file transfer fails." : ? "[D]elete file, cancel send, and close program." : ? "^C to terminate without deleting" : if inkey$ <> "d" then goto 241
+            th_exec "send /attach /stop"
             scratch argv$(2) + ".ags" ; out$
             ? "Message File Deleted"
             goto 9999     
