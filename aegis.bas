@@ -30,9 +30,14 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.1.5"
-        DEBUG64% = 0
-        DEBUG65% = 0
+    10  ver$ = "2.2.0"
+
+        ' GLOBAL SETTINGS (set to 1 to enable)
+
+        DEBUG64% = 0 ' Display Base64 upon encoding
+        DEBUG65% = 0 ' Display Index65 upon encryption
+        VISIBLE% = 0 ' Don't conceal message text or filename with * when typing
+
         goto 110
 
     30  ?
@@ -79,7 +84,8 @@
         ?
         
         if debug65% = 1 then ? "            Index 65 Debug Enabled"
-        if debug64% = 1 then ? "            Base64 Debug Enabled" : ?        
+        if debug64% = 1 then ? "            Base64 Debug Enabled"   
+        if visible% = 1 then ? "            Typing Visibility Enabled" : ?
         END
 
     110 ' Generate ASCII Lookup Table for Encoding /// provided by searinox
@@ -265,8 +271,18 @@
         sleep 0.5 : th_exec "rm " + ef$ + ".ags" ' scratch ef$ + ".ags" ; out$
         goto 9999
 
-    190 ' MESSAGE INPUT AND CONCEALMENT FUNCTIONS
+    181 ' VISIBLE MESSAGE INPUT AND FILE NAMING     
+        182 input "Message: ", msg$
+            if msg$ = "" then goto 182
+        183 input "Filename: ", file$
+            if file$ = "" then goto 183
+            if len(file$) < 1 then goto 183
+            if len(file$) > 3 then ? : ? "Filename must not exceed 3 characters" : goto 183
+            goto 196
+
+    190 ' CONCEALED MESSAGE INPUT AND FILE NAMING
             ?
+            if visible% = 1 then goto 181
         191 msg$ = "" : ? "Message: " ;
         192 hide$ = inkey$ : if hide$ = chr$(13) then goto 193
             if (hide$ = chr$(127) or hide$ = chr$(8)) and len(msg$) > 0 then msg$ = left$( msg$, abs( len( msg$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
@@ -282,7 +298,7 @@
             goto 194
         195 if len(file$) < 1 then goto 193
             if len(file$) > 3 then ? : ? "Filename must not exceed 3 characters" : goto 193
-            emsg$ = th_b64e$(msg$)
+        196 emsg$ = th_b64e$(msg$)
             if DEBUG64% = 1 then ? : ? "Base64: " + emsg$
             gosub 120
 
