@@ -14,7 +14,7 @@ Plaintext Encryption Utility for Telehack.com
    - exists solely for publicity and for contributors to further improve AEGIS over time.
 
 ```
- AEGIS 2.1 Encryption Utility for TELEHACK             
+ AEGIS 2.2 Encryption Utility for TELEHACK             
                                                                  
  %usage: aegis <function> [filename] [sender/recipient]        
          prefix all functions with -, --, /, or nothing at all.           
