@@ -1,4 +1,6 @@
 # AEGIS
+![Telehack](https://telehack.com/telehack.svg)
+![Telehack](https://telehack.com/cmd.svg)
 ![TeleBASIC](https://raw.githubusercontent.com/telehack-foundation/.github/main/profile/svg/telebasic.svg)
 ![Perl](https://img.shields.io/badge/perl-%2339457E.svg?style=for-the-badge&logo=perl&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
