@@ -209,7 +209,7 @@ if ($option == 1) {
 } elsif ($option == 4) {
     decrypt_file();
 } elsif ($option == 5) {
-    delete_ags_files();
+    delete_agsp_files();
 } else {
     print "Invalid option\n";
     exit; # Terminate the program if an invalid option is selected
