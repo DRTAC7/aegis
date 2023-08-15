@@ -104,23 +104,23 @@ sub create_file {
     my $filename = <STDIN>;
     chomp $filename;
 
-    # Write the encrypted message to a .ags file
-    open(my $file, '>', "$filename.ags") or die "Cannot open file '$filename.ags' for writing: $!";
+    # Write the encrypted message to a .agsp file
+    open(my $file, '>', "$filename.agsp") or die "Cannot open file '$filename.agsp' for writing: $!";
     print $file $encrypted_string;
     close($file);
 
-    print "File '$filename.ags' created.\n";
+    print "File '$filename.agsp' created.\n";
     exit; # Terminate the program after creating the file
 }
 
 sub decrypt_file {
     # Take input from the user
-    print "Enter the filename (without extension) of the .ags file to decrypt: ";
+    print "Enter the filename (without extension) of the .agsp file to decrypt: ";
     my $filename = <STDIN>;
     chomp $filename;
 
-    # Read the content of the .ags file
-    open(my $file, '<', "$filename.ags") or die "Cannot open file '$filename.ags' for reading: $!";
+    # Read the content of the .agsp file
+    open(my $file, '<', "$filename.agsp") or die "Cannot open file '$filename.agsp' for reading: $!";
     my $content = <$file>;
     close($file);
 
@@ -147,20 +147,20 @@ sub decrypt_file {
     exit; # Terminate the program after decryption
 }
 
-sub delete_ags_files {
-    # Get a list of .ags files in the current directory
-    my @ags_files = glob("*.ags");
+sub delete_agsp_files {
+    # Get a list of .agsp files in the current directory
+    my @agsp_files = glob("*.agsp");
 
-    if (@ags_files) {
-        foreach my $ags_file (@ags_files) {
-            unlink $ags_file or warn "Could not delete $ags_file: $!";
+    if (@agsp_files) {
+        foreach my $agsp_file (@agsp_files) {
+            unlink $agsp_file or warn "Could not delete $agsp_file: $!";
         }
-        print scalar(@ags_files) . " .ags files deleted.\n";
+        print scalar(@agsp_files) . " .agsp files deleted.\n";
     } else {
-        print "No .ags files found in the directory.\n";
+        print "No .agsp files found in the directory.\n";
     }
 
-    exit; # Terminate the program after deleting .ags files
+    exit; # Terminate the program after deleting .agsp files
 }
 
 print "Choose an option:\n";
@@ -168,7 +168,7 @@ print "1. Encrypt a message\n";
 print "2. Decrypt a message\n";
 print "3. Create a file with encrypted message and key\n";
 print "4. Decrypt a file\n";
-print "5. Delete all .ags files in the directory\n";
+print "5. Delete all .agsp files in the directory\n";
 print "Option: ";
 
 my $option = <STDIN>;
