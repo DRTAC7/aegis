@@ -1,11 +1,11 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # MIT License                                               _______________      
 #                                                           \......|....../      
 # Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
 # Copyright:      (c) 2023 telehack.com/u/drtac7              \....|..../        
 # Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
-# Author:         drtac7                                        \..|../          
+# Authors:        drtac7, zcj                                   \..|../          
 # Contributors:   ChatGPT                                        \.|./           
 # License:        MIT                                             \|/            
 #                                                                                
@@ -35,6 +35,9 @@ use strict;
 use warnings;
 use MIME::Base64;
 use File::Glob;
+
+# compatibility with <5.18 perls
+use English qw( -no_match_vars );
 
 # Create a mapping of Base64 characters to Index65 values
 my @base64_chars = ('A'..'Z', 'a'..'z', 0..9, '+', '/', '=');
@@ -82,8 +85,7 @@ sub decrypt_index65_with_key {
 sub create_file {
     # Take input from the user
     print "Enter a message to encrypt and save to a file: ";
-    my $input = <STDIN>;
-    chomp $input;
+    chomp (my $input = <STDIN>);
 
     # Convert the input to Index65
     my $index65_string = '';
@@ -101,8 +103,7 @@ sub create_file {
 
     # Prompt the user for a filename
     print "Enter the filename (without extension): ";
-    my $filename = <STDIN>;
-    chomp $filename;
+    chomp (my $filename = <STDIN>);
 
     # Write the encrypted message to a .agsp file
     open(my $file, '>', "$filename.agsp") or die "Cannot open file '$filename.agsp' for writing: $!";
@@ -116,8 +117,7 @@ sub create_file {
 sub decrypt_file {
     # Take input from the user
     print "Enter the filename (without extension) of the .agsp file to decrypt: ";
-    my $filename = <STDIN>;
-    chomp $filename;
+    chomp (my $filename = <STDIN>);
 
     # Read the content of the .agsp file
     open(my $file, '<', "$filename.agsp") or die "Cannot open file '$filename.agsp' for reading: $!";
@@ -171,13 +171,11 @@ print "4. Decrypt a file\n";
 print "5. Delete all .agsp files in the directory\n";
 print "Option: ";
 
-my $option = <STDIN>;
-chomp $option;
+chomp (my $option = <STDIN>);
 
 if ($option == 1) {
     print "Enter a message to encrypt: ";
-    my $input = <STDIN>;
-    chomp $input;
+    chomp (my $input = <STDIN>);
     my $index65_string = '';
     for my $char (split //, encode_base64($input)) {
         if (exists $base64_to_index65{$char}) {
@@ -189,11 +187,9 @@ if ($option == 1) {
     print "Key: $key\n";
 } elsif ($option == 2) {
     print "Enter the encrypted message: ";
-    my $encrypted_msg = <STDIN>;
-    chomp $encrypted_msg;
+    chomp (my $encrypted_msg = <STDIN>);
     print "Enter the key: ";
-    my $key = <STDIN>;
-    chomp $key;
+    chomp (my $key = <STDIN>);
     my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
     my $base64_output = '';
     for (my $i = 0; $i < length($decrypted_index65); $i += 2) {
