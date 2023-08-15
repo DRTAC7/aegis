@@ -45,4 +45,3 @@ Plaintext Encryption Utility for Telehack.com
 ```
 ![Telehack](https://telehack.com/telehack.svg)
 ![Telehack](https://telehack.com/cmd.svg)
-           
