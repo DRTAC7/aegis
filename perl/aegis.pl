@@ -119,7 +119,7 @@ sub create_file
     print $file $encrypted_string;
     close($file);
 
-    print "File '$filename.agsp' created.\n";
+    print "\nFile '$filename.agsp' created.\n\n";
     exit; # Terminate the program after creating the file
 }
 
@@ -168,7 +168,7 @@ sub delete_agsp_files
         {
             unlink $agsp_file or warn "Could not delete $agsp_file: $!";
         }
-        print scalar(@agsp_files) . "\n .agsp files deleted.\n\n";
+        print scalar(@agsp_files) . " .agsp files deleted.\n\n";
     } else {
         print "No .agsp files found in the directory.\n";
     }
