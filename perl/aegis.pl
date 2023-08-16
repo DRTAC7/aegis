@@ -1,12 +1,12 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # MIT License                                               _______________      
 #                                                           \......|....../      
 # Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
 # Copyright:      (c) 2023 telehack.com/u/drtac7              \....|..../        
 # Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
-# Author:         drtac7                                        \..|../          
-# Contributors:   ChatGPT                                        \.|./           
+# Authors:        drtac7                                        \..|../          
+# Contributors:   zcj, ChatGPT                                   \.|./           
 # License:        MIT                                             \|/            
 #                                                                                
 # Permission is hereby granted, free of charge, to any person obtaining a copy   
@@ -36,25 +36,32 @@ use warnings;
 use MIME::Base64;
 use File::Glob;
 
+# compatibility with <5.18 perls
+use English qw( -no_match_vars );
+
 # Create a mapping of Base64 characters to Index65 values
 my @base64_chars = ('A'..'Z', 'a'..'z', 0..9, '+', '/', '=');
 my %base64_to_index65;
-for my $i (0..$#base64_chars) {
+for my $i (0..$#base64_chars) 
+{
     $base64_to_index65{$base64_chars[$i]} = sprintf("%02d", $i);
 }
 
 # Create a mapping of Index65 values to Base64 characters
 my %index65_to_base64;
-for my $i (0..$#base64_chars) {
+for my $i (0..$#base64_chars) 
+{
     $index65_to_base64{sprintf("%02d", $i)} = $base64_chars[$i];
 }
 
-sub encrypt_index65 {
+sub encrypt_index65 
+{
     my ($index65_str) = @_;
     my $encrypted_index65 = '';
     my $key = '';
 
-    for my $digit (split //, $index65_str) {
+    for my $digit (split //, $index65_str) 
+    {
         my $random_number = int(rand(10));
         my $encrypted_digit = ($digit + $random_number) % 10;
         $encrypted_index65 .= $encrypted_digit;
@@ -64,14 +71,16 @@ sub encrypt_index65 {
     return ($encrypted_index65, $key);
 }
 
-sub decrypt_index65_with_key {
+sub decrypt_index65_with_key 
+{
     my ($index65_str, $key) = @_;
     my $decrypted_index65 = '';
 
     my @index65_digits = split //, $index65_str;
     my @key_digits = split //, $key;
 
-    for my $i (0..$#index65_digits) {
+    for my $i (0..$#index65_digits) 
+    {
         my $decrypted_digit = ($index65_digits[$i] - $key_digits[$i] + 10) % 10;
         $decrypted_index65 .= $decrypted_digit;
     }
@@ -79,16 +88,18 @@ sub decrypt_index65_with_key {
     return $decrypted_index65;
 }
 
-sub create_file {
+sub create_file 
+{
     # Take input from the user
     print "Enter a message to encrypt and save to a file: ";
-    my $input = <STDIN>;
-    chomp $input;
+    chomp (my $input = <STDIN>);
 
     # Convert the input to Index65
     my $index65_string = '';
-    for my $char (split //, encode_base64($input)) {
-        if (exists $base64_to_index65{$char}) {
+    for my $char (split //, encode_base64($input)) 
+    {
+        if (exists $base64_to_index65{$char}) 
+        {
             $index65_string .= $base64_to_index65{$char};
         }
     }
@@ -101,8 +112,7 @@ sub create_file {
 
     # Prompt the user for a filename
     print "Enter the filename (without extension): ";
-    my $filename = <STDIN>;
-    chomp $filename;
+    chomp (my $filename = <STDIN>);
 
     # Write the encrypted message to a .agsp file
     open(my $file, '>', "$filename.agsp") or die "Cannot open file '$filename.agsp' for writing: $!";
@@ -113,11 +123,11 @@ sub create_file {
     exit; # Terminate the program after creating the file
 }
 
-sub decrypt_file {
+sub decrypt_file 
+{
     # Take input from the user
     print "Enter the filename (without extension) of the .agsp file to decrypt: ";
-    my $filename = <STDIN>;
-    chomp $filename;
+    chomp (my $filename = <STDIN>);
 
     # Read the content of the .agsp file
     open(my $file, '<', "$filename.agsp") or die "Cannot open file '$filename.agsp' for reading: $!";
@@ -131,31 +141,34 @@ sub decrypt_file {
     my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
 
     my $base64_output = '';
-    for (my $i = 0; $i < length($decrypted_index65); $i += 2) {
+    for (my $i = 0; $i < length($decrypted_index65); $i += 2) 
+    {
         my $index = substr($decrypted_index65, $i, 2);
-        if (exists $index65_to_base64{$index}) {
+        if (exists $index65_to_base64{$index}) 
+        {
             $base64_output .= $index65_to_base64{$index};
         }
     }
 
     my $decoded_output = decode_base64($base64_output);
 
-    print "Encrypted Message: $encrypted_msg\n";
-    print "Key: $key\n";
-    print "Decrypted Message: $decoded_output\n";
+    print "\nDecrypted Message: $decoded_output\n\n";
 
     exit; # Terminate the program after decryption
 }
 
-sub delete_agsp_files {
+sub delete_agsp_files 
+{
     # Get a list of .agsp files in the current directory
     my @agsp_files = glob("*.agsp");
 
-    if (@agsp_files) {
-        foreach my $agsp_file (@agsp_files) {
+    if (@agsp_files) 
+    {
+        foreach my $agsp_file (@agsp_files) 
+        {
             unlink $agsp_file or warn "Could not delete $agsp_file: $!";
         }
-        print scalar(@agsp_files) . " .agsp files deleted.\n";
+        print scalar(@agsp_files) . "\n .agsp files deleted.\n\n";
     } else {
         print "No .agsp files found in the directory.\n";
     }
@@ -171,34 +184,36 @@ print "4. Decrypt a file\n";
 print "5. Delete all .agsp files in the directory\n";
 print "Option: ";
 
-my $option = <STDIN>;
-chomp $option;
+chomp (my $option = <STDIN>);
 
-if ($option == 1) {
+if ($option == 1) 
+{
     print "Enter a message to encrypt: ";
-    my $input = <STDIN>;
-    chomp $input;
+    chomp (my $input = <STDIN>);
     my $index65_string = '';
-    for my $char (split //, encode_base64($input)) {
-        if (exists $base64_to_index65{$char}) {
+    for my $char (split //, encode_base64($input)) 
+    {
+        if (exists $base64_to_index65{$char}) 
+        {
             $index65_string .= $base64_to_index65{$char};
         }
     }
     my ($encrypted_msg, $key) = encrypt_index65($index65_string);
     print "Encrypted Message: $encrypted_msg\n";
     print "Key: $key\n";
-} elsif ($option == 2) {
+} elsif ($option == 2) 
+{
     print "Enter the encrypted message: ";
-    my $encrypted_msg = <STDIN>;
-    chomp $encrypted_msg;
+    chomp (my $encrypted_msg = <STDIN>);
     print "Enter the key: ";
-    my $key = <STDIN>;
-    chomp $key;
+    chomp (my $key = <STDIN>);
     my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
     my $base64_output = '';
-    for (my $i = 0; $i < length($decrypted_index65); $i += 2) {
+    for (my $i = 0; $i < length($decrypted_index65); $i += 2) 
+    {
         my $index = substr($decrypted_index65, $i, 2);
-        if (exists $index65_to_base64{$index}) {
+        if (exists $index65_to_base64{$index}) 
+        {
             $base64_output .= $index65_to_base64{$index};
         }
     }
