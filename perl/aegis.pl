@@ -42,22 +42,26 @@ use English qw( -no_match_vars );
 # Create a mapping of Base64 characters to Index65 values
 my @base64_chars = ('A'..'Z', 'a'..'z', 0..9, '+', '/', '=');
 my %base64_to_index65;
-for my $i (0..$#base64_chars) {
+for my $i (0..$#base64_chars) 
+{
     $base64_to_index65{$base64_chars[$i]} = sprintf("%02d", $i);
 }
 
 # Create a mapping of Index65 values to Base64 characters
 my %index65_to_base64;
-for my $i (0..$#base64_chars) {
+for my $i (0..$#base64_chars) 
+{
     $index65_to_base64{sprintf("%02d", $i)} = $base64_chars[$i];
 }
 
-sub encrypt_index65 {
+sub encrypt_index65 
+{
     my ($index65_str) = @_;
     my $encrypted_index65 = '';
     my $key = '';
 
-    for my $digit (split //, $index65_str) {
+    for my $digit (split //, $index65_str) 
+    {
         my $random_number = int(rand(10));
         my $encrypted_digit = ($digit + $random_number) % 10;
         $encrypted_index65 .= $encrypted_digit;
@@ -67,14 +71,16 @@ sub encrypt_index65 {
     return ($encrypted_index65, $key);
 }
 
-sub decrypt_index65_with_key {
+sub decrypt_index65_with_key 
+{
     my ($index65_str, $key) = @_;
     my $decrypted_index65 = '';
 
     my @index65_digits = split //, $index65_str;
     my @key_digits = split //, $key;
 
-    for my $i (0..$#index65_digits) {
+    for my $i (0..$#index65_digits) 
+    {
         my $decrypted_digit = ($index65_digits[$i] - $key_digits[$i] + 10) % 10;
         $decrypted_index65 .= $decrypted_digit;
     }
@@ -82,15 +88,18 @@ sub decrypt_index65_with_key {
     return $decrypted_index65;
 }
 
-sub create_file {
+sub create_file 
+{
     # Take input from the user
     print "Enter a message to encrypt and save to a file: ";
     chomp (my $input = <STDIN>);
 
     # Convert the input to Index65
     my $index65_string = '';
-    for my $char (split //, encode_base64($input)) {
-        if (exists $base64_to_index65{$char}) {
+    for my $char (split //, encode_base64($input)) 
+    {
+        if (exists $base64_to_index65{$char}) 
+        {
             $index65_string .= $base64_to_index65{$char};
         }
     }
@@ -114,7 +123,8 @@ sub create_file {
     exit; # Terminate the program after creating the file
 }
 
-sub decrypt_file {
+sub decrypt_file 
+{
     # Take input from the user
     print "Enter the filename (without extension) of the .agsp file to decrypt: ";
     chomp (my $filename = <STDIN>);
@@ -131,31 +141,34 @@ sub decrypt_file {
     my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
 
     my $base64_output = '';
-    for (my $i = 0; $i < length($decrypted_index65); $i += 2) {
+    for (my $i = 0; $i < length($decrypted_index65); $i += 2) 
+    {
         my $index = substr($decrypted_index65, $i, 2);
-        if (exists $index65_to_base64{$index}) {
+        if (exists $index65_to_base64{$index}) 
+        {
             $base64_output .= $index65_to_base64{$index};
         }
     }
 
     my $decoded_output = decode_base64($base64_output);
 
-    print "Encrypted Message: $encrypted_msg\n";
-    print "Key: $key\n";
-    print "Decrypted Message: $decoded_output\n";
+    print "\nDecrypted Message: $decoded_output\n\n";
 
     exit; # Terminate the program after decryption
 }
 
-sub delete_agsp_files {
+sub delete_agsp_files 
+{
     # Get a list of .agsp files in the current directory
     my @agsp_files = glob("*.agsp");
 
-    if (@agsp_files) {
-        foreach my $agsp_file (@agsp_files) {
+    if (@agsp_files) 
+    {
+        foreach my $agsp_file (@agsp_files) 
+        {
             unlink $agsp_file or warn "Could not delete $agsp_file: $!";
         }
-        print scalar(@agsp_files) . " .agsp files deleted.\n";
+        print scalar(@agsp_files) . "\n .agsp files deleted.\n\n";
     } else {
         print "No .agsp files found in the directory.\n";
     }
@@ -173,28 +186,34 @@ print "Option: ";
 
 chomp (my $option = <STDIN>);
 
-if ($option == 1) {
+if ($option == 1) 
+{
     print "Enter a message to encrypt: ";
     chomp (my $input = <STDIN>);
     my $index65_string = '';
-    for my $char (split //, encode_base64($input)) {
-        if (exists $base64_to_index65{$char}) {
+    for my $char (split //, encode_base64($input)) 
+    {
+        if (exists $base64_to_index65{$char}) 
+        {
             $index65_string .= $base64_to_index65{$char};
         }
     }
     my ($encrypted_msg, $key) = encrypt_index65($index65_string);
     print "Encrypted Message: $encrypted_msg\n";
     print "Key: $key\n";
-} elsif ($option == 2) {
+} elsif ($option == 2) 
+{
     print "Enter the encrypted message: ";
     chomp (my $encrypted_msg = <STDIN>);
     print "Enter the key: ";
     chomp (my $key = <STDIN>);
     my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
     my $base64_output = '';
-    for (my $i = 0; $i < length($decrypted_index65); $i += 2) {
+    for (my $i = 0; $i < length($decrypted_index65); $i += 2) 
+    {
         my $index = substr($decrypted_index65, $i, 2);
-        if (exists $index65_to_base64{$index}) {
+        if (exists $index65_to_base64{$index}) 
+        {
             $base64_output .= $index65_to_base64{$index};
         }
     }
@@ -205,7 +224,7 @@ if ($option == 1) {
 } elsif ($option == 4) {
     decrypt_file();
 } elsif ($option == 5) {
-    delete_ags_files();
+    delete_agsp_files();
 } else {
     print "Invalid option\n";
     exit; # Terminate the program if an invalid option is selected
