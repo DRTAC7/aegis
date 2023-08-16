@@ -38,21 +38,23 @@ use MIME::Base64;
 # Create a mapping of Base64 characters to Index65 values
 my @base64_chars = split //, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 my %base64_to_index65;
-for my $i (0..$#base64_chars) {
+for my $i (0..$#base64_chars) 
+{
     $base64_to_index65{$base64_chars[$i]} = sprintf("%02d", $i);
 }
 
 # Create a mapping of Index65 values to Base64 characters
 my %index65_to_base64;
-for my $i (0..$#base64_chars) {
+for my $i (0..$#base64_chars) 
+{
     $index65_to_base64{sprintf("%02d", $i)} = $base64_chars[$i];
 }
 
-sub plaintext_to_base64 {
+sub plaintext_to_base64 
+{
     # Take input from the user
     print "Enter a message: ";
-    my $input = <STDIN>;
-    chomp $input;
+    chomp ( my $input = <STDIN> );
 
     # Convert the input to base64
     my $base64_string = encode_base64($input);
@@ -61,16 +63,18 @@ sub plaintext_to_base64 {
     print "Base64: $base64_string\n";
 }
 
-sub base64_to_index65 {
+sub base64_to_index65 
+{
     # Take input from the user
     print "Enter a Base64 string: ";
-    my $base64_input = <STDIN>;
-    chomp $base64_input;
+    chomp ( my $base64_input = <STDIN> );
 
     # Convert Base64 string to Index65
     my $index65_string = '';
-    for my $char (split //, $base64_input) {
-        if (exists $base64_to_index65{$char}) {
+    for my $char (split //, $base64_input)
+     {
+        if (exists $base64_to_index65{$char}) 
+        {
             $index65_string .= $base64_to_index65{$char};
         }
     }
@@ -79,11 +83,11 @@ sub base64_to_index65 {
     print "Index65: $index65_string\n";
 }
 
-sub index65_to_encrypted {
+sub index65_to_encrypted 
+{
     # Take input from the user
     print "Enter an Index65 string: ";
-    my $index65_input = <STDIN>;
-    chomp $index65_input;
+    chomp ( my $index65_input = <STDIN> );
 
     # Encrypt the Index65 string
     my ($encrypted_msg, $key) = encrypt_index65($index65_input);
@@ -93,16 +97,15 @@ sub index65_to_encrypted {
     print "Key: $key\n";
 }
 
-sub encrypted_to_index65 {
+sub encrypted_to_index65 
+{
     # Take input from the user
     print "Enter an encrypted message: ";
-    my $encrypted_input = <STDIN>;
-    chomp $encrypted_input;
+    chomp ( my $encrypted_input = <STDIN> );
 
     # Take input from the user
     print "Enter the key: ";
-    my $key = <STDIN>;
-    chomp $key;
+    chomp ( my $key = <STDIN> );
 
     # Decrypt the encrypted message
     my $decrypted_index65 = decrypt_index65_with_key($encrypted_input, $key);
@@ -111,17 +114,19 @@ sub encrypted_to_index65 {
     print "Decrypted Index65: $decrypted_index65\n";
 }
 
-sub index65_to_base64 {
+sub index65_to_base64 
+{
     # Take input from the user
     print "Enter an Index65 string: ";
-    my $index65_input = <STDIN>;
-    chomp $index65_input;
+    chomp ( my $index65_input = <STDIN> );
 
     # Convert Index65 to base64
     my $base64_output = '';
-    for (my $i = 0; $i < length($index65_input); $i += 2) {
+    for (my $i = 0; $i < length($index65_input); $i += 2) 
+    {
         my $index = substr($index65_input, $i, 2);
-        if (exists $index65_to_base64{$index}) {
+        if (exists $index65_to_base64{$index}) 
+        {
             $base64_output .= $index65_to_base64{$index};
         }
     }
@@ -130,11 +135,11 @@ sub index65_to_base64 {
     print "Base64: $base64_output\n";
 }
 
-sub base64_to_plaintext {
+sub base64_to_plaintext 
+{
     # Take input from the user
     print "Enter a Base64 string: ";
-    my $base64_input = <STDIN>;
-    chomp $base64_input;
+    chomp ( my $base64_input = <STDIN> );
 
     # Decode base64 string
     my $decoded_output = decode_base64($base64_input);
@@ -143,12 +148,14 @@ sub base64_to_plaintext {
     print "Plaintext: $decoded_output\n";
 }
 
-sub encrypt_index65 {
+sub encrypt_index65 
+{
     my ($index65_str) = @_;
     my $encrypted_index65 = '';
     my $key = '';
 
-    for my $digit (split //, $index65_str) {
+    for my $digit (split //, $index65_str) 
+    {
         my $random_number = int(rand(10));
         my $encrypted_digit = ($digit + $random_number) % 10;
         $encrypted_index65 .= $encrypted_digit;
@@ -158,11 +165,13 @@ sub encrypt_index65 {
     return ($encrypted_index65, $key);
 }
 
-sub decrypt_index65_with_key {
+sub decrypt_index65_with_key 
+{
     my ($encrypted_index65, $key) = @_;
     my $decrypted_index65 = '';
 
-    for (my $i = 0; $i < length($encrypted_index65); $i++) {
+    for (my $i = 0; $i < length($encrypted_index65); $i++) 
+    {
         my $encrypted_digit = substr($encrypted_index65, $i, 1);
         my $key_digit = substr($key, $i % length($key), 1);
         my $decrypted_digit = ($encrypted_digit - $key_digit + 10) % 10;
@@ -172,7 +181,8 @@ sub decrypt_index65_with_key {
     return $decrypted_index65;
 }
 
-sub print_menu {
+sub print_menu 
+{
     print "Choose an option:\n";
     print "1. Convert plaintext to Base64\n";
     print "2. Convert Base64 to Index65\n";
@@ -186,10 +196,10 @@ sub print_menu {
 
 print_menu();
 
-my $option = <STDIN>;
-chomp $option;
+chomp ( my $option = <STDIN> );
 
-while ($option ne '0') {
+while ($option ne '0') 
+{
     if ($option == 1) {
         plaintext_to_base64();
     } elsif ($option == 2) {
@@ -207,8 +217,7 @@ while ($option ne '0') {
     }
 
     print_menu();
-    $option = <STDIN>;
-    chomp $option;
+    chomp ( $option = <STDIN> );
 }
 
 print "Exiting...\n";
