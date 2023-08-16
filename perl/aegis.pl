@@ -182,11 +182,12 @@ print "2. Decrypt a message\n";
 print "3. Create a file with encrypted message and key\n";
 print "4. Decrypt a file\n";
 print "5. Delete all .agsp files in the directory\n";
+print "0. Exit\n";
 print "Option: ";
 
 chomp (my $option = <STDIN>);
 
-if ($option == 1) 
+if ($option == 1) # Encrypt a message
 {
     print "Enter a message to encrypt: ";
     chomp (my $input = <STDIN>);
@@ -199,9 +200,9 @@ if ($option == 1)
         }
     }
     my ($encrypted_msg, $key) = encrypt_index65($index65_string);
-    print "Encrypted Message: $encrypted_msg\n";
-    print "Key: $key\n";
-} elsif ($option == 2) 
+    print "\nEncrypted Message: $encrypted_msg\n";
+    print "\nKey: $key\n\n";
+} elsif ($option == 2) # Decrypt a message
 {
     print "Enter the encrypted message: ";
     chomp (my $encrypted_msg = <STDIN>);
@@ -218,13 +219,16 @@ if ($option == 1)
         }
     }
     my $decoded_output = decode_base64($base64_output);
-    print "Decrypted Message: $decoded_output\n";
-} elsif ($option == 3) {
+    print "\nDecrypted Message: $decoded_output\n\n";
+} elsif ($option == 3) { # Create an encrypted file
     create_file();
-} elsif ($option == 4) {
+} elsif ($option == 4) { # Decrypt an encrypted file
     decrypt_file();
-} elsif ($option == 5) {
+} elsif ($option == 5) { # Delete all .agsp files
     delete_agsp_files();
+} elsif ($option == 0) { # Exit cleanly
+    print "\nTerminating...\n\n";
+    exit;
 } else {
     print "Invalid option\n";
     exit; # Terminate the program if an invalid option is selected
