@@ -5,7 +5,7 @@
 # Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
 # Copyright:      (c) 2023 telehack.com/u/drtac7              \....|..../        
 # Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
-# Authors:        drtac7                                        \..|../          
+# Author:        drtac7                                        \..|../          
 # Contributors:   zcj, ChatGPT                                   \.|./           
 # License:        MIT                                             \|/            
 #                                                                                
