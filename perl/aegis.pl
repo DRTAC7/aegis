@@ -91,7 +91,7 @@ sub decrypt_index65_with_key
 sub create_file 
 {
     # Take input from the user
-    print "Enter a message to encrypt and save to a file: ";
+    print "Message: ";
     chomp (my $input = <STDIN>);
 
     # Convert the input to Index65
