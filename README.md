@@ -10,10 +10,10 @@ Plaintext Encryption Utility for Telehack.com
 ***AEGIS May be obtained from the following sources:***
 
 1. `pub /get drtac7/aegis.bas` (requires a user account on [Telehack](https://www.telehack.com))
-    - AEGIS runs only on Telehack. Running the command above within Telehack is the most direct way to access AEGIS. 
+    - The original version of AEGIS, available only on Telehack.com
 
-2. This repo. 
-   - exists solely for publicity and for contributors to further improve AEGIS over time.
+2. `git clone https://www.github.com/drtac7/aegis`
+   - Includes a version written in Perl that contains features not present in the Telehack version
 
 ```
  AEGIS 2.2 Encryption Utility for TELEHACK             
@@ -42,6 +42,20 @@ Plaintext Encryption Utility for Telehack.com
             aegis -a message underwood                           
             aegis -c file                                        
             aegis -o file     
+```
+```
+AEGIS Version 2.0 for Perl
+
+Choose an option:
+
+1. Create a file with encrypted message and key
+2. Decrypt a file and print message to screen
+3. Encrypt an existing .txt file into .agsp
+4. Decrypt an existing .agsp file and output message to .txt file
+5. Delete all .agsp files in the directory
+0. Exit
+
+Option:
 ```
 ![Telehack](https://telehack.com/telehack.svg)
 ![Telehack](https://telehack.com/cmd.svg)
