@@ -44,7 +44,7 @@ Plaintext Encryption Utility for Telehack.com
             aegis -o file     
 ```
 ```
-AEGIS 3.1.1 Encryption Utility for Perl
+AEGIS 3.3 Encryption Utility for Perl
 
 Usage:
 Encrypt a message                                 aegis.pl e <filename> <save_separate (y/n)>
