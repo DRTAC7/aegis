@@ -151,11 +151,11 @@ sub decrypt_file
     my $decrypted_message = decode_base64($decrypted_base64);
 
     if ($output_filename) {
-        open(my $output_file, '>', "$output_filename.txt") or die "Cannot open file '$output_filename.txt' for writing: $!";
+        open(my $output_file, '>', "$output_filename") or die "Cannot open file '$output_filename' for writing: $!";
         print $output_file $decrypted_message;
         close($output_file);
 
-        print "Decrypted message saved in '$output_filename.txt'.\n";
+        print "Decrypted message saved in '$output_filename'.\n";
     } else {
         print "\nDecrypted Message: $decrypted_message\n\n";
     }
