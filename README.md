@@ -44,18 +44,14 @@ Plaintext Encryption Utility for Telehack.com
             aegis -o file     
 ```
 ```
-AEGIS Version 2.0 for Perl
+AEGIS for Perl - Version 3.1.1
 
-Choose an option:
-
-1. Create a file with encrypted message and key
-2. Decrypt a file and print message to screen
-3. Encrypt an existing .txt file into .agsp
-4. Decrypt an existing .agsp file and output message to .txt file
-5. Delete all .agsp files in the directory
-0. Exit
-
-Option:
+Usage:
+Encrypt a message                                 aegis.pl e <filename> <save_separate (y/n)>
+Decrypt a file                                    aegis.pl d <filename> [output_filename]
+Encrypt an extant plaintext file                  aegis.pl ef <txt_path> <agsp_filename>
+Combine message and key file                      aegis.pl c <agspc_filename> <agspk_filename> <combined_filename>
+Purge all AEGIS related files in the directory    aegis.pl p
 ```
 ![Telehack](https://telehack.com/telehack.svg)
 ![Telehack](https://telehack.com/cmd.svg)
