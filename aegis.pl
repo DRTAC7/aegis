@@ -37,7 +37,7 @@ use MIME::Base64;
 use File::Glob;
 
 # Version Number
-my $ver = "3.0";
+my $ver = "3.1.1";
 
 # compatibility with <5.18 perls
 use English qw( -no_match_vars );
@@ -199,7 +199,7 @@ sub delete_agsp_files
         {
             unlink $agsp_file or warn "Could not delete $agsp_file: $!";
         }
-        print scalar(@agsp_files) . " .agsp, .agspk, and .agspc files deleted.\n";
+        print scalar(@agsp_files) . " files deleted.\n";
     } else {
         print "No .agsp, .agspk, or .agspc files found in the directory.\n";
     }
@@ -246,11 +246,17 @@ if (@ARGV < 1) {
 my $command = shift @ARGV;
 
 if ($command eq "e") {
-    if (@ARGV < 1 || @ARGV > 3) {
+    if (@ARGV < 1 || @ARGV > 2) {
         print_usage();
         exit 1;
     }
     my ($filename, $save_separate) = @ARGV;
+    
+    # If the save_separate option is not provided, default to 'n'
+    if (!defined $save_separate) {
+        $save_separate = 'n';
+    }
+    
     print "Message: ";
     chomp(my $input = <STDIN>);
     create_file($input, $filename, lc($save_separate) eq 'y');
