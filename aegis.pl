@@ -228,7 +228,7 @@ sub combine_agsp_files
 
 sub print_usage
 {
-    print "\nAEGIS for Perl - Version $ver\n\n";
+    print "\nAEGIS $ver Encryption Utility for Perl\n\n";
     print "Usage:\n";
     print "Encrypt a message                                 $0 e <filename> <save_separate (y/n)>\n";
     print "Decrypt a file                                    $0 d <filename> [output_filename]\n";
