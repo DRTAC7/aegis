@@ -1,31 +1,31 @@
 #!/usr/bin/env perl
 
-# MIT License                                               _______________      
-#                                                           \......|....../      
-# Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
-# Copyright:      (c) 2023 telehack.com/u/drtac7              \....|..../        
-# Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
-# Author:         drtac7                                        \..|../          
-# Contributors:   zcj, ChatGPT                                   \.|./           
-# License:        MIT                                             \|/            
-#                                                                                
-# Permission is hereby granted, free of charge, to any person obtaining a copy   
-# of this software and associated documentation files (the "Software"), to deal  
-# in the Software without restriction, including without limitation the rights   
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      
-# copies of the Software, and to permit persons to whom the Software is          
-# furnished to do so, subject to the following conditions:                       
-#                                                                                
-# The above copyright notice and this permission notice shall be included in all 
-# copies or substantial portions of the Software.                                
-#                                                                                
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
-# SOFTWARE.                                                                      
+# MIT License                                               _______________
+#                                                           \......|....../
+# Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /
+# Copyright:      (c) 2023 telehack.com/u/drtac7              \....|..../
+# Website:        https://www.github.com/DRTAC7/aegis          \...|.../
+# Author:         drtac7                                        \..|../
+# Contributors:   zcj, ChatGPT                                   \.|./
+# License:        MIT                                             \|/
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 #
 # IF YOU WISH TO MAKE OFFICIAL MODIFICATIONS TO THIS SOFTWARE
 # PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
@@ -37,8 +37,7 @@ use MIME::Base64;
 use File::Glob;
 
 # Version Number
-
-my $ver = "2.0";
+my $ver = "3.0";
 
 # compatibility with <5.18 perls
 use English qw( -no_match_vars );
@@ -46,25 +45,25 @@ use English qw( -no_match_vars );
 # Create a mapping of Base64 characters to Index65 values
 my @base64_chars = ('A'..'Z', 'a'..'z', 0..9, '+', '/', '=',);
 my %base64_to_index65;
-for my $i (0..$#base64_chars) 
+for my $i (0..$#base64_chars)
 {
     $base64_to_index65{$base64_chars[$i]} = sprintf("%02d", $i);
 }
 
 # Create a mapping of Index65 values to Base64 characters
 my %index65_to_base64;
-for my $i (0..$#base64_chars) 
+for my $i (0..$#base64_chars)
 {
     $index65_to_base64{sprintf("%02d", $i)} = $base64_chars[$i];
 }
 
-sub encrypt_index65 
+sub encrypt_index65
 {
     my ($index65_str) = @_;
     my $encrypted_index65 = '';
     my $key = '';
 
-    for my $digit (split //, $index65_str) 
+    for my $digit (split //, $index65_str)
     {
         my $random_number = int(rand(10));
         my $encrypted_digit = ($digit + $random_number) % 10;
@@ -75,7 +74,7 @@ sub encrypt_index65
     return ($encrypted_index65, $key);
 }
 
-sub decrypt_index65_with_key 
+sub decrypt_index65_with_key
 {
     my ($index65_str, $key) = @_;
     my $decrypted_index65 = '';
@@ -83,7 +82,7 @@ sub decrypt_index65_with_key
     my @index65_digits = split //, $index65_str;
     my @key_digits = split //, $key;
 
-    for my $i (0..$#index65_digits) 
+    for my $i (0..$#index65_digits)
     {
         my $decrypted_digit = ($index65_digits[$i] - $key_digits[$i] + 10) % 10;
         $decrypted_index65 .= $decrypted_digit;
@@ -92,17 +91,15 @@ sub decrypt_index65_with_key
     return $decrypted_index65;
 }
 
-sub create_file 
+sub create_file
 {
-    # Take input from the user
-    print "Message: ";
-    chomp (my $input = <STDIN>);
+    my ($input, $filename, $save_separate) = @_;
 
     # Convert the input to Index65
     my $index65_string = '';
-    for my $char (split //, encode_base64($input)) 
+    for my $char (split //, encode_base64($input))
     {
-        if (exists $base64_to_index65{$char}) 
+        if (exists $base64_to_index65{$char})
         {
             $index65_string .= $base64_to_index65{$char};
         }
@@ -114,180 +111,173 @@ sub create_file
     # Create the encrypted message with key string
     my $encrypted_string = "$encrypted_msg" . "l" . "$key";
 
-    # Prompt the user for a filename
-    print "Enter the filename (without extension): ";
-    chomp (my $filename = <STDIN>);
+    if ($save_separate) {
+        open(my $msg_file, '>', "$filename.agspc") or die "Cannot open file '$filename.agspc' for writing: $!";
+        print $msg_file $encrypted_msg;
+        close($msg_file);
 
-    # Write the encrypted message to a .agsp file
-    open(my $file, '>', "$filename.agsp") or die "Cannot open file '$filename.agsp' for writing: $!";
-    print $file $encrypted_string;
-    close($file);
+        open(my $key_file, '>', "$filename.agspk") or die "Cannot open file '$filename.agspk' for writing: $!";
+        print $key_file $key;
+        close($key_file);
 
-    print "\nFile '$filename.agsp' created.\n\n";
-    exit; # Terminate the program after creating the file
+        print "Encrypted message saved in '$filename.agspc' and key saved in '$filename.agspk'.\n";
+    } else {
+        open(my $file, '>', "$filename.agsp") or die "Cannot open file '$filename.agsp' for writing: $!";
+        print $file $encrypted_string;
+        close($file);
+
+        print "File '$filename.agsp' created.\n";
+    }
 }
 
-sub encrypt_txt_to_agsp 
+sub decrypt_file
 {
-    # Take input from the user
-    print "Enter the path to the plaintext file: ";
-    chomp(my $txt_path = <STDIN>);
+    my ($agsp_filename, $output_filename) = @_;
 
-    # Read the content of the .txt file
+    open(my $agsp_file, '<', "$agsp_filename.agsp") or die "Cannot open file '$agsp_filename.agsp' for reading: $!";
+    my $encrypted_string = <$agsp_file>;
+    close($agsp_file);
+
+    my ($encrypted_msg, $key) = split('l', $encrypted_string);
+
+    my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
+
+    my $decrypted_base64 = '';
+    for my $digit (unpack("(A2)*", $decrypted_index65))
+    {
+        $decrypted_base64 .= $index65_to_base64{$digit};
+    }
+
+    my $decrypted_message = decode_base64($decrypted_base64);
+
+    if ($output_filename) {
+        open(my $output_file, '>', "$output_filename.txt") or die "Cannot open file '$output_filename.txt' for writing: $!";
+        print $output_file $decrypted_message;
+        close($output_file);
+
+        print "Decrypted message saved in '$output_filename.txt'.\n";
+    } else {
+        print "\nDecrypted Message: $decrypted_message\n\n";
+    }
+}
+
+sub encrypt_txt_to_agsp
+{
+    my ($txt_path, $agsp_filename) = @_;
+
     open(my $txt_file, '<', $txt_path) or die "Cannot open file '$txt_path' for reading: $!";
     my $content = do { local $/; <$txt_file> };
     close($txt_file);
 
-    # Convert the input to Index65
     my $index65_string = '';
-    for my $char (split //, encode_base64($content)) 
+    for my $char (split //, encode_base64($content))
     {
-        if (exists $base64_to_index65{$char}) 
+        if (exists $base64_to_index65{$char})
         {
             $index65_string .= $base64_to_index65{$char};
         }
     }
 
-    # Encrypt the Index65 string
     my ($encrypted_msg, $key) = encrypt_index65($index65_string);
 
-    # Create the encrypted message with key string
     my $encrypted_string = "$encrypted_msg" . "l" . "$key";
 
-    # Prompt the user for a filename for the encrypted .agsp file
-    print "Enter the filename (without extension) for the encrypted .agsp file: ";
-    chomp(my $agsp_filename = <STDIN>);
-
-    # Write the encrypted message to a .agsp file
     open(my $agsp_file, '>', "$agsp_filename.agsp") or die "Cannot open file '$agsp_filename.agsp' for writing: $!";
     print $agsp_file $encrypted_string;
     close($agsp_file);
 
-    print "\nFile '$agsp_filename.agsp' created.\n\n";
-    exit; # Terminate the program after creating the file
+    print "File '$agsp_filename.agsp' created.\n";
 }
 
-sub decrypt_file 
+sub delete_agsp_files
 {
-    # Take input from the user
-    print "Enter the filename (without extension) of the .agsp file to decrypt: ";
-    chomp (my $filename = <STDIN>);
+    my @agsp_files = glob("*.agsp *.agspk *.agspc");
 
-    # Read the content of the .agsp file
-    open(my $file, '<', "$filename.agsp") or die "Cannot open file '$filename.agsp' for reading: $!";
-    my $content = <$file>;
-    close($file);
-
-    # Separate the encrypted message and key using 'l'
-    my ($encrypted_msg, $key) = split 'l', $content;
-
-    # Decrypt the encrypted message
-    my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
-
-    my $base64_output = '';
-    for (my $i = 0; $i < length($decrypted_index65); $i += 2) 
+    if (@agsp_files)
     {
-        my $index = substr($decrypted_index65, $i, 2);
-        if (exists $index65_to_base64{$index}) 
-        {
-            $base64_output .= $index65_to_base64{$index};
-        }
-    }
-
-    my $decoded_output = decode_base64($base64_output);
-
-    print "\nDecrypted Message: $decoded_output\n\n";
-
-    exit; # Terminate the program after decryption
-}
-
-sub decrypt_agsp_to_txt 
-{
-    # Take input from the user
-    print "Enter the filename (without extension) of the .agsp file to decrypt: ";
-    chomp (my $filename = <STDIN>);
-
-    # Read the content of the .agsp file
-    open(my $file, '<', "$filename.agsp") or die "Cannot open file '$filename.agsp' for reading: $!";
-    my $content = <$file>;
-    close($file);
-
-    # Separate the encrypted message and key using 'l'
-    my ($encrypted_msg, $key) = split 'l', $content;
-
-    # Decrypt the encrypted message
-    my $decrypted_index65 = decrypt_index65_with_key($encrypted_msg, $key);
-
-    my $base64_output = '';
-    for (my $i = 0; $i < length($decrypted_index65); $i += 2) 
-    {
-        my $index = substr($decrypted_index65, $i, 2);
-        if (exists $index65_to_base64{$index}) 
-        {
-            $base64_output .= $index65_to_base64{$index};
-        }
-    }
-
-    my $decoded_output = decode_base64($base64_output);
-
-    # Prompt the user for a filename for the decrypted .txt file
-    print "Enter the filename (without extension) for the decrypted .txt file: ";
-    chomp(my $txt_filename = <STDIN>);
-
-    # Write the decrypted message to a .txt file
-    open(my $txt_file, '>', "$txt_filename.txt") or die "Cannot open file '$txt_filename.txt' for writing: $!";
-    print $txt_file $decoded_output;
-    close($txt_file);
-
-    print "\nFile '$txt_filename.txt' created.\n\n";
-    exit; # Terminate the program after creating the file
-}
-
-sub delete_agsp_files 
-{
-    # Get a list of .agsp files in the current directory
-    my @agsp_files = glob("*.agsp");
-
-    if (@agsp_files) 
-    {
-        foreach my $agsp_file (@agsp_files) 
+        foreach my $agsp_file (@agsp_files)
         {
             unlink $agsp_file or warn "Could not delete $agsp_file: $!";
         }
-        print scalar(@agsp_files) . " .agsp files deleted.\n\n";
+        print scalar(@agsp_files) . " .agsp, .agspk, and .agspc files deleted.\n";
     } else {
-        print "No .agsp files found in the directory.\n";
+        print "No .agsp, .agspk, or .agspc files found in the directory.\n";
     }
-
-    exit; # Terminate the program after deleting .agsp files
 }
 
-print "\nAEGIS Version $ver for Perl\n\n";
-print "Choose an option:\n\n";
-print "1. Create a file with encrypted message and key\n";
-print "2. Decrypt a file and print message to screen\n";
-print "3. Encrypt an existing .txt file into .agsp\n";
-print "4. Decrypt an existing .agsp file and output message to .txt file\n";
-print "5. Delete all .agsp files in the directory\n";
-print "0. Exit\n\n";
-print "Option: ";
+sub combine_agsp_files
+{
+    my ($agspc_filename, $agspk_filename, $combined_filename) = @_;
 
-chomp (my $option = <STDIN>);
+    open(my $agspc_file, '<', "$agspc_filename.agspc") or die "Cannot open file '$agspc_filename.agspc' for reading: $!";
+    my $encrypted_msg = <$agspc_file>;
+    close($agspc_file);
 
-if ($option == 1){ # Create an encrypted file
-    create_file();
-} elsif ($option == 2) { # Decrypt an encrypted file and print to screen
-    decrypt_file();
-} elsif ($option == 3) { # Encrypt an existing file .txt file
-    encrypt_txt_to_agsp();
-} elsif ($option == 4) { # Decrypt an encrypted .agsp file to .txt file
-    decrypt_agsp_to_txt();
-} elsif ($option == 5) { # Delete all .agsp files
+    open(my $agspk_file, '<', "$agspk_filename.agspk") or die "Cannot open file '$agspk_filename.agspk' for reading: $!";
+    my $key = <$agspk_file>;
+    close($agspk_file);
+
+    my $encrypted_string = "$encrypted_msg" . "l" . "$key";
+
+    open(my $combined_file, '>', "$combined_filename.agsp") or die "Cannot open file '$combined_filename.agsp' for writing: $!";
+    print $combined_file $encrypted_string;
+    close($combined_file);
+
+    print "Combined .agsp file '$combined_filename.agsp' created.\n";
+}
+
+sub print_usage
+{
+    print "Usage:\n";
+    print "    $0 e <filename> <save_separate (y/n)>\n";
+    print "    $0 d <filename> [output_filename]\n";
+    print "    $0 ef <txt_path> <agsp_filename>\n";
+    print "    $0 p\n";
+    print "    $0 c <agspc_filename> <agspk_filename> <combined_filename>\n";
+}
+
+if (@ARGV < 1) {
+    print_usage();
+    exit 1;
+}
+
+my $command = shift @ARGV;
+
+if ($command eq "e") {
+    if (@ARGV < 1 || @ARGV > 3) {
+        print_usage();
+        exit 1;
+    }
+    my ($filename, $save_separate) = @ARGV;
+    print "Message: ";
+    chomp(my $input = <STDIN>);
+    create_file($input, $filename, lc($save_separate) eq 'y');
+} elsif ($command eq "d") {
+    if (@ARGV < 1 || @ARGV > 2) {
+        print_usage();
+        exit 1;
+    }
+    my ($filename, $output_filename) = @ARGV;
+    decrypt_file($filename, $output_filename);
+} elsif ($command eq "ef") {
+    if (@ARGV != 2) {
+        print_usage();
+        exit 1;
+    }
+    my ($txt_path, $agsp_filename) = @ARGV;
+    encrypt_txt_to_agsp($txt_path, $agsp_filename);
+} elsif ($command eq "p") {
     delete_agsp_files();
-} elsif ($option == 0) { # Exit cleanly
-    print "\nTerminating...\n\n";
-    exit;
+} elsif ($command eq "c") {
+    if (@ARGV != 3) {
+        print_usage();
+        exit 1;
+    }
+    my ($agspc_filename, $agspk_filename, $combined_filename) = @ARGV;
+    combine_agsp_files($agspc_filename, $agspk_filename, $combined_filename);
+} elsif ($command eq "--help" || $command eq "-?") {
+    print_usage();
 } else {
-    print "Invalid option\n";
-    exit; # Terminate the program if an invalid option is selected
+    print "Invalid command: $command\n";
+    exit 1;
 }
