@@ -228,12 +228,13 @@ sub combine_agsp_files
 
 sub print_usage
 {
+    print "\nAEGIS for Perl - Version $ver\n\n";
     print "Usage:\n";
-    print "    $0 e <filename> <save_separate (y/n)>\n";
-    print "    $0 d <filename> [output_filename]\n";
-    print "    $0 ef <txt_path> <agsp_filename>\n";
-    print "    $0 p\n";
-    print "    $0 c <agspc_filename> <agspk_filename> <combined_filename>\n";
+    print "Encrypt a message                                 $0 e <filename> <save_separate (y/n)>\n";
+    print "Decrypt a file                                    $0 d <filename> [output_filename]\n";
+    print "Encrypt an extant plaintext file                  $0 ef <txt_path> <agsp_filename>\n";
+    print "Purge all AEGIS related files in the directory    $0 p\n";
+    print "Combine message and key file                      $0 c <agspc_filename> <agspk_filename> <combined_filename>\n\n";
 }
 
 if (@ARGV < 1) {
