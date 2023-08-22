@@ -311,7 +311,19 @@ if ($command eq "e") {
         exit 1;
     }
     my ($txt_path, $agsp_filename, $save_separate) = @ARGV;
-    encrypt_txt_to_agsp($txt_path, $agsp_filename, lc($save_separate) eq 'y');
+
+    # If the save_separate option is not provided, default to 'n'
+    if (!defined $save_separate) {
+        $save_separate = 'n';
+    }
+
+    if (lc($save_separate) eq 'y') {
+        encrypt_txt_to_agsp($txt_path, $agsp_filename);
+    } else {
+        print "Message: ";
+        chomp(my $input = <STDIN>);
+        create_file($input, $agsp_filename, lc($save_separate) eq 'y');
+    }
 } elsif ($command eq "s") {
     if (@ARGV != 1) {
         print_usage();
