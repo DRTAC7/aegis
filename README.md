@@ -47,10 +47,11 @@ Plaintext Encryption Utility for Telehack.com
 AEGIS 3.3 Encryption Utility for Perl
 
 Usage:
-Encrypt a message                                 aegis.pl e <filename> <save_separate (y/n)>
+Encrypt a message                                 aegis.pl e <filename> [save_separate (y/n)]
 Decrypt a file                                    aegis.pl d <filename> [output_filename]
-Encrypt an extant plaintext file                  aegis.pl ef <txt_path> <agsp_filename>
-Combine message and key file                      aegis.pl c <agspc_filename> <agspk_filename> <combined_filename>
+Encrypt an extant plaintext file                  aegis.pl ef <txt_path> <agsp_filename> [save_separate (y/n)]
+Split a .agsp file into .agspk and .agspc files   aegis.pl s <agsp_filename>
+Combine message and key file                      aegis.pl c <filename>
 Purge all AEGIS related files in the directory    aegis.pl p
 ```
 ![Telehack](https://telehack.com/telehack.svg)
