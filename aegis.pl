@@ -269,12 +269,12 @@ sub print_usage
 {
     print "\nAEGIS $ver Encryption Utility for Perl\n\n";
     print "Usage:\n";
-    print "Encrypt a message                                 $0 e <filename> [save_separate (y/n)]\n";
-    print "Decrypt a file                                    $0 d <filename> [output_filename]\n";
-    print "Encrypt an extant plaintext file                  $0 ef <txt_path> <agsp_filename> [save_separate (y/n)]\n";
-    print "Split a .agsp file into .agspk and .agspc files   $0 s <agsp_filename>\n";
-    print "Combine message and key file                      $0 c <filename>\n";
-    print "Purge all AEGIS related files in the directory    $0 p\n\n";
+    print "$0 e(ncrypt) <input filename> [save separate (y/n)]\n";
+    print "$0 d(ecrypt) <input filename> [output filename]\n";
+    print "$0 ef <plaintext filename> <output filename> [save separate (y/n)]\n";
+    print "$0 s(plit) <output filename>\n";
+    print "$0 c(ombine) <filename>\n";
+    print "$0 p(urge)\n\n";
 }
 
 if (@ARGV < 1) {
