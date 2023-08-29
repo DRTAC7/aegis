@@ -37,7 +37,7 @@ use MIME::Base64;
 use File::Glob;
 
 # Version Number
-my $ver = "3.3";
+my $ver = "3.3.1";
 
 # compatibility with <5.18 perls
 use English qw( -no_match_vars );
@@ -269,10 +269,10 @@ sub print_usage
 {
     print "\nAEGIS $ver Encryption Utility for Perl\n\n";
     print "Usage:\n";
-    print "$0 e(ncrypt) <input filename> [save separate (y/n)]\n";
+    print "$0 e(ncrypt) <output filename> [save separate (y/n)]\n";
     print "$0 d(ecrypt) <input filename> [output filename]\n";
-    print "$0 ef <plaintext filename> <output filename> [save separate (y/n)]\n";
-    print "$0 s(plit) <output filename>\n";
+    print "$0 ef <extant filename> <output filename> [save separate (y/n)]\n";
+    print "$0 s(plit) <input filename>\n";
     print "$0 c(ombine) <filename>\n";
     print "$0 p(urge)\n\n";
 }
@@ -284,7 +284,7 @@ if (@ARGV < 1) {
 
 my $command = shift @ARGV;
 
-if ($command eq "e") {
+if ($command eq "e" || $command eq "encrypt") {
     if (@ARGV < 1 || @ARGV > 2) {
         print_usage();
         exit 1;
@@ -298,7 +298,7 @@ if ($command eq "e") {
     print "Message: ";
     chomp(my $input = <STDIN>);
     create_file($input, $filename, lc($save_separate) eq 'y');
-} elsif ($command eq "d") {
+} elsif ($command eq "d" || $command eq "decrypt") {
     if (@ARGV < 1 || @ARGV > 2) {
         print_usage();
         exit 1;
@@ -324,16 +324,16 @@ if ($command eq "e") {
         chomp(my $input = <STDIN>);
         create_file($input, $agsp_filename, lc($save_separate) eq 'y');
     }
-} elsif ($command eq "s") {
+} elsif ($command eq "s" || $command eq "split") {
     if (@ARGV != 1) {
         print_usage();
         exit 1;
     }
     my ($agsp_filename) = @ARGV;
     split_agsp_file($agsp_filename);
-} elsif ($command eq "p") {
+} elsif ($command eq "p" || $command eq "purge") {
     delete_agsp_files();
-} elsif ($command eq "c") {
+} elsif ($command eq "c" || $command eq "combine") {
     if (@ARGV != 1) {
         print_usage();
         exit 1;
