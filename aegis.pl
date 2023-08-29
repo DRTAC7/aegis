@@ -37,7 +37,7 @@ use MIME::Base64;
 use File::Glob;
 
 # Version Number
-my $ver = "3.3.1";
+my $ver = "3.3.2";
 
 # compatibility with <5.18 perls
 use English qw( -no_match_vars );
@@ -108,7 +108,8 @@ sub create_file
     # Encrypt the Index65 string
     my ($encrypted_msg, $key) = encrypt_index65($index65_string);
 
-    if ($save_separate) {
+    if ($save_separate) 
+    {
         open(my $msg_file, '>', "$filename.agspc") or die "Cannot open file '$filename.agspc' for writing: $!";
         print $msg_file $encrypted_msg;
         close($msg_file);
@@ -118,7 +119,8 @@ sub create_file
         close($key_file);
 
         print "Encrypted message saved in '$filename.agspc' and key saved in '$filename.agspk'.\n";
-    } else {
+    } else 
+    {
         my $encrypted_string = "$encrypted_msg" . "l" . "$key";
 
         open(my $file, '>', "$filename.agsp") or die "Cannot open file '$filename.agsp' for writing: $!";
@@ -128,7 +130,6 @@ sub create_file
         print "File '$filename.agsp' created.\n";
     }
 }
-
 
 sub decrypt_file
 {
@@ -150,13 +151,15 @@ sub decrypt_file
 
     my $decrypted_message = decode_base64($decrypted_base64);
 
-    if ($output_filename) {
+    if ($output_filename) 
+    {
         open(my $output_file, '>', "$output_filename") or die "Cannot open file '$output_filename' for writing: $!";
         print $output_file $decrypted_message;
         close($output_file);
 
         print "Decrypted message saved in '$output_filename'.\n";
-    } else {
+    } else 
+    {
         print "\nDecrypted Message: $decrypted_message\n\n";
     }
 }
@@ -181,7 +184,8 @@ sub encrypt_txt_to_agsp
     # Encrypt the Index65 string
     my ($encrypted_msg, $key) = encrypt_index65($index65_string);
 
-    if ($save_separate) {
+    if ($save_separate) 
+    {
         open(my $msg_file, '>', "$agsp_filename.agspc") or die "Cannot open file '$agsp_filename.agspc' for writing: $!";
         print $msg_file $encrypted_msg;
         close($msg_file);
@@ -191,7 +195,8 @@ sub encrypt_txt_to_agsp
         close($key_file);
 
         print "Encrypted message saved in '$agsp_filename.agspc' and key saved in '$agsp_filename.agspk'.\n";
-    } else {
+    } else 
+    {
         my $encrypted_string = "$encrypted_msg" . "l" . "$key";
 
         open(my $agsp_file, '>', "$agsp_filename.agsp") or die "Cannot open file '$agsp_filename.agsp' for writing: $!";
@@ -234,7 +239,8 @@ sub delete_agsp_files
             unlink $agsp_file or warn "Could not delete $agsp_file: $!";
         }
         print scalar(@agsp_files) . " files deleted.\n";
-    } else {
+    } else 
+    {
         print "No .agsp, .agspk, or .agspc files found in the directory.\n";
     }
 }
@@ -265,9 +271,13 @@ sub combine_agsp_files
     print "Combined .agsp file '${combined_filename}.agsp' created and .agspc/.agspk files deleted.\n";
 }
 
-sub print_usage
+sub print_version
 {
     print "\nAEGIS $ver Encryption Utility for Perl\n\n";
+}
+
+sub print_usage
+{
     print "Usage:\n";
     print "$0 e(ncrypt) <output filename> [save separate (y/n)]\n";
     print "$0 d(ecrypt) <input filename> [output filename]\n";
@@ -277,72 +287,90 @@ sub print_usage
     print "$0 p(urge)\n\n";
 }
 
-if (@ARGV < 1) {
+if (@ARGV < 1) 
+{
+    print_version();
     print_usage();
     exit 1;
 }
 
 my $command = shift @ARGV;
 
-if ($command eq "e" || $command eq "encrypt") {
-    if (@ARGV < 1 || @ARGV > 2) {
+if ($command eq "e" || $command eq "encrypt") 
+{
+    if (@ARGV < 1 || @ARGV > 2) 
+    {
         print_usage();
         exit 1;
     }
     my ($filename, $save_separate) = @ARGV;
 
-    if (!defined $save_separate) {
+    if (!defined $save_separate) 
+    {
         $save_separate = 'n';
     }
 
     print "Message: ";
     chomp(my $input = <STDIN>);
     create_file($input, $filename, lc($save_separate) eq 'y');
-} elsif ($command eq "d" || $command eq "decrypt") {
-    if (@ARGV < 1 || @ARGV > 2) {
+} elsif ($command eq "d" || $command eq "decrypt") 
+{
+    if (@ARGV < 1 || @ARGV > 2) 
+    {
         print_usage();
         exit 1;
     }
     my ($filename, $output_filename) = @ARGV;
     decrypt_file($filename, $output_filename);
-} elsif ($command eq "ef") {
-    if (@ARGV < 2 || @ARGV > 3) {
+} elsif ($command eq "ef") 
+{
+    if (@ARGV < 2 || @ARGV > 3) 
+    {
         print_usage();
         exit 1;
     }
     my ($txt_path, $agsp_filename, $save_separate) = @ARGV;
 
     # If the save_separate option is not provided, default to 'n'
-    if (!defined $save_separate) {
+    if (!defined $save_separate) 
+    {
         $save_separate = 'n';
     }
 
-    if (lc($save_separate) eq 'y') {
+    if (lc($save_separate) eq 'y') 
+    {
+        encrypt_txt_to_agsp($txt_path, $agsp_filename, lc($save_separate) eq 'y');
+    } else 
+    {
         encrypt_txt_to_agsp($txt_path, $agsp_filename);
-    } else {
-        print "Message: ";
-        chomp(my $input = <STDIN>);
-        create_file($input, $agsp_filename, lc($save_separate) eq 'y');
+        exit 1;
     }
-} elsif ($command eq "s" || $command eq "split") {
-    if (@ARGV != 1) {
+} elsif ($command eq "s" || $command eq "split") 
+{
+    if (@ARGV != 1) 
+    {
         print_usage();
         exit 1;
     }
     my ($agsp_filename) = @ARGV;
     split_agsp_file($agsp_filename);
-} elsif ($command eq "p" || $command eq "purge") {
+} elsif ($command eq "p" || $command eq "purge") 
+{
     delete_agsp_files();
-} elsif ($command eq "c" || $command eq "combine") {
-    if (@ARGV != 1) {
+} elsif ($command eq "c" || $command eq "combine") 
+{
+    if (@ARGV != 1) 
+    {
         print_usage();
         exit 1;
     }
     my ($combined_filename) = @ARGV;
     combine_agsp_files($combined_filename);
-} elsif ($command eq "--help" || $command eq "-?") {
+} elsif ($command eq "--help" || $command eq "-?") 
+{
     print_usage();
-} else {
+} else 
+{
     print "Invalid command: $command\n";
     exit 1;
 }
