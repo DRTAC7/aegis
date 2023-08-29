@@ -287,6 +287,7 @@ sub print_usage
     print "$0 p(urge)\n\n";
 }
 
+# Argument Handling
 if (@ARGV < 1) 
 {
     print_version();
