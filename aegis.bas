@@ -30,13 +30,15 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.2.0"
+    10  ver$ = "2.2.1"
 
         ' GLOBAL SETTINGS (set to 1 to enable)
 
         DEBUG64% = 0 ' Display Base64 upon encoding
         DEBUG65% = 0 ' Display Index65 upon encryption
         VISIBLE% = 0 ' Don't conceal message text or filename with * when typing
+        CLSCREN% = 0 ' Clear screen after displaying decoded message
+        TIMEOUT% = 2 ' How long the program will wait before clearing the screen
 
         goto 110
 
@@ -85,7 +87,9 @@
         
         if debug65% = 1 then ? "            Index 65 Debug Enabled"
         if debug64% = 1 then ? "            Base64 Debug Enabled"   
-        if visible% = 1 then ? "            Typing Visibility Enabled" : ?
+        if visible% = 1 then ? "            Typing Visibility Enabled"
+        if clscren% = 1 then ? "            Clear Screen Enabled" : ?
+
         END
 
     110 ' Generate ASCII Lookup Table for Encoding /// provided by searinox
@@ -269,6 +273,7 @@
         ? : ? "Decrypted Message: " + th_b64d$(db64$)
         ?
         sleep 0.5 : th_exec "rm " + ef$ + ".ags" ' scratch ef$ + ".ags" ; out$
+        if CLSCREN% = 1 then sleep TIMEOUT% : CLS
         goto 9999
 
     181 ' VISIBLE MESSAGE INPUT AND FILE NAMING     
