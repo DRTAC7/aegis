@@ -30,7 +30,7 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.2.1"
+    10  ver$ = "2.3.0"
 
         ' GLOBAL SETTINGS (set to 1 to enable)
 
@@ -39,6 +39,7 @@
         VISIBLE% = 0 ' Don't conceal message text or filename with * when typing
         CLSCREN% = 0 ' Clear screen after displaying decoded message
         TIMEOUT% = 2 ' How long the program will wait before clearing the screen
+        RNDFILE% = 0 ' Randomly generate filenames
 
         goto 110
 
@@ -49,7 +50,7 @@
         ? "         - the encrypted file is blank                                                                "
         ? "         - an error that causes double filetyping (Ex. msg.ags.ags)                                   "
         ? "         - (Most common) you included the filetype (.ags, .agsc, .agsk) when naming or calling a file "
-        ? "                                                                                                      "
+        ?
         ? "     FATAL ERROR 02 will occur if:                                                                    "
         ? "         - you attempt to name the encrypted file '*'                                                 "
         ? "         - you are using a mobile device (may not always occur)                                       "
@@ -58,14 +59,16 @@
 
     40  ?
         ? " AEGIS v" ver$ " Encryption Utility for TELEHACK                   "
+        ?
+        ? " Usage:   aegis <function> [filename] [receipient]                 "
+        ?
+        ? "          Prefix all functions with -, --, /, or nothing at all    "
         ? "                                                                   "
-        ? " %usage: aegis <function> [filename] [sender/receipient]           "
-        ? "         prefix all functions with -, --, /, or nothing at all     "
-        ? "                                                                   "
-        ? "         DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)            "
-        ? "         WHEN NAMING OR CALLING A FILE!                            "
-        ? "                                                                   "
-        ? " Availble command line functions:                                  "
+        ? "          DO NOT INCLUDE THE FILETYPE (.AGS .AGSK .AGSC)           "
+        ? "          WHEN NAMING OR CALLING A FILE!                           "
+        ?
+        ? " Commands:                                                         "
+        ?
         ? "          e:   encrypt a message and save to disk                  "
         ? "          s:   send a pre-encrypted file:                          "
         ? "          es:  encrypt a message and send immediately              "
@@ -77,18 +80,26 @@
         ? "          p:   purge all .ags files stored on the disk             "
         ? "          x:   stop all outgoing sends                             "
         ? "          faq: view the frequently asked questions message         "
-        ? "                                                                   "
-        ? " Examples:  aegis -es forbin                                       "
-        ? "            aegis -s msg forbin                                    "
-        ? "            aegis -a message underwood                             "
-        ? "            aegis -c file                                          "
-        ? "            aegis -o file                                          "
         ?
-        
-        if debug65% = 1 then ? "            Index 65 Debug Enabled"
-        if debug64% = 1 then ? "            Base64 Debug Enabled"   
-        if visible% = 1 then ? "            Typing Visibility Enabled"
-        if clscren% = 1 then ? "            Clear Screen Enabled" : ?
+        ? " Examples:                                                         "
+        ?
+        ? "          aegis -es forbin                                         "
+        ? "          aegis -s msg forbin                                      "
+        ? "          aegis -a message underwood                               "
+        ? "          aegis -c file                                            "
+        ? "          aegis -o file                                            "
+        ?
+        ? " Settings:                                                         "
+        ?
+
+        if debug65% = 0 then if debug64% = 0 then if visible% = 0 then if clscren% = 0 then if rndfile% = 0 then NOPTION% = 1
+        if noption% = 1 then ? "          All Optional Settings Disabled"
+        if debug65% = 1 then ? "          Index 65 Debug Enabled"
+        if debug64% = 1 then ? "          Base64 Debug Enabled"   
+        if visible% = 1 then ? "          Typing Visibility Enabled"
+        if clscren% = 1 then ? "          Clear Screen Enabled"
+        if rndfile% = 1 then ? "          Random File Names Enabled"
+        ?
 
         END
 
@@ -279,6 +290,7 @@
     181 ' VISIBLE MESSAGE INPUT AND FILE NAMING     
         182 input "Message: ", msg$
             if msg$ = "" then goto 182
+            if RNDFILE% = 1 then file$ = str$(nint(rnd(999))) : goto 196
         183 input "Filename: ", file$
             if file$ = "" then goto 183
             if len(file$) < 1 then goto 183
@@ -295,7 +307,8 @@
             msg$ = msg$ + hide$ : ? "*" ;
             goto 192
             ? : if len(msg$) < 1 then goto 191
-        193 file$ = "" : ? : ? "Filename: " ;
+        193 if RNDFILE% = 1 then file$ = str$(nint(rnd(999))) : goto 196
+            file$ = "" : ? : ? "Filename: " ;
         194 hides$ = inkey$ : if hides$ = chr$(13) then goto 195
             if (hides$ = chr$(127) or hides$ = chr$(8)) and len(file$) > 0 then file$ = left$( file$, abs( len( file$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hides$ = chr$(127) or hides$ = chr$(8) then goto 194
