@@ -30,16 +30,16 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.3.0"
+    10  ver$ = "2.3.1"
 
         ' GLOBAL SETTINGS (set to 1 to enable)
 
         DEBUG64% = 0 ' Display Base64 upon encoding
         DEBUG65% = 0 ' Display Index65 upon encryption
         VISIBLE% = 0 ' Don't conceal message text or filename with * when typing
-        CLSCREN% = 0 ' Clear screen after displaying decoded message
+        CLSCREN% = 1 ' Clear screen after displaying decoded message
         TIMEOUT% = 2 ' How long the program will wait before clearing the screen
-        RNDFILE% = 0 ' Randomly generate filenames
+        RNDFILE% = 1 ' Randomly generate filenames
 
         goto 110
 
@@ -103,7 +103,11 @@
 
         END
 
-    110 ' Generate ASCII Lookup Table for Encoding /// provided by searinox
+    110 ' Check process table for ftpd instance
+        ftpdCheck$ = ""
+        gosub 999        
+
+        ' Generate ASCII Lookup Table for Encoding /// provided by searinox
         counter = 0
         for i = 65 to 90
             tmp$ = str$(counter)
@@ -404,6 +408,13 @@
          271 th_exec "ls *" + ext$ ; out$
              if th_re( out$, "%glob" ) then ? "%no " ext$ " files found" : return
              th_exec "rm *" + ext$
+             return
+
+    999 ' CHECK IF FTPD.EXE IS RUNNING
+
+             th_exec "ps | grep ftpd | cut -c 8-11" ; ftpdCheck$
+             ftpdCheck$ = th_re$( ftpdCheck$, "ftpd" )
+             if ftpdCheck$ <> "ftpd" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
              return
 
 9999 ? "Terminating AEGIS" : END
