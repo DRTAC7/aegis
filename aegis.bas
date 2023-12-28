@@ -105,7 +105,9 @@
 
     110 ' Check process table for ftpd instance
         ftpdCheck$ = ""
-        gosub 999        
+        th_exec "ps | grep ftpd | cut -c 8-11" ; ftpdCheck$
+        ftpdCheck$ = th_re$( ftpdCheck$, "ftpd" )
+        if ftpdCheck$ <> "ftpd" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
 
         ' Generate ASCII Lookup Table for Encoding /// provided by searinox
         counter = 0
@@ -408,13 +410,6 @@
          271 th_exec "ls *" + ext$ ; out$
              if th_re( out$, "%glob" ) then ? "%no " ext$ " files found" : return
              th_exec "rm *" + ext$
-             return
-
-    999 ' CHECK IF FTPD.EXE IS RUNNING
-
-             th_exec "ps | grep ftpd | cut -c 8-11" ; ftpdCheck$
-             ftpdCheck$ = th_re$( ftpdCheck$, "ftpd" )
-             if ftpdCheck$ <> "ftpd" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
              return
 
 9999 ? "Terminating AEGIS" : END
