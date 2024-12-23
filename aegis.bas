@@ -107,8 +107,7 @@
 
     110 ' Check process table for ftpd instance
         th_exec "\ps | grep ftpd" ; ftpdCheck$
-        ftpdCheck = th_re( ftpdCheck$, "ftpd" )
-        if not ftpdCheck then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
+        if ftpdCheck = "" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
 
         ' Generate ASCII Lookup Table for Encoding /// provided by searinox
         counter = 0
