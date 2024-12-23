@@ -93,23 +93,22 @@
         ? " Settings:                                                         "
         ?
 
-        if debug65% = 0 then if debug64% = 0 then if visible% = 0 then if clscren% = 0 then if rndfile% = 0 then if b64lmsg% = 0 then NOPTION% = 1
-        if noption% = 1 then ? "          All Optional Settings Disabled"
-        if debug65% = 1 then ? "          Index 65 Debug Enabled"
-        if debug64% = 1 then ? "          Base64 Debug Enabled"   
-        if visible% = 1 then ? "          Typing Visibility Enabled"
-        if clscren% = 1 then ? "          Clear Screen Enabled"
-        if rndfile% = 1 then ? "          Random File Names Enabled"
-        if b64lmsg% = 1 then ? "          Base64 Layering Enabled"
+        if not ( debug65% or debug64% or visible% or clscren% or rndfile% or b64lmsg% ) then NOPTION% = 1
+        if noption% then ? "          All Optional Settings Disabled"
+        if debug65% then ? "          Index 65 Debug Enabled"
+        if debug64% then ? "          Base64 Debug Enabled"   
+        if visible% then ? "          Typing Visibility Enabled"
+        if clscren% then ? "          Clear Screen Enabled"
+        if rndfile% then ? "          Random File Names Enabled"
+        if b64lmsg% then ? "          Base64 Layering Enabled"
         ?
 
         END
 
     110 ' Check process table for ftpd instance
-        ftpdCheck$ = ""
-        th_exec "ps | grep ftpd | cut -c 8-11" ; ftpdCheck$
-        ftpdCheck$ = th_re$( ftpdCheck$, "ftpd" )
-        if ftpdCheck$ <> "ftpd" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
+        th_exec "\ps | grep ftpd" ; ftpdCheck$
+        ftpdCheck = th_re( ftpdCheck$, "ftpd" )
+        if not ftpdCheck then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
 
         ' Generate ASCII Lookup Table for Encoding /// provided by searinox
         counter = 0
