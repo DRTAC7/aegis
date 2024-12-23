@@ -2,7 +2,7 @@
 ' MIT License                                               _______________      
 '                                                           \......|....../      
 ' Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
-' Copyright:      (c) 2023 telehack.com/u/drtac7              \....|..../        
+' Copyright:      (c) 2024 telehack.com/u/drtac7              \....|..../        
 ' Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
 ' Author:         drtac7                                        \..|../          
 ' Contributors:   searinox, zcj                                  \.|./           
@@ -30,7 +30,7 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "2.3.1"
+    10  ver$ = "3.0"
 
         ' GLOBAL SETTINGS (set to 1 to enable)
 
@@ -40,6 +40,7 @@
         CLSCREN% = 1 ' Clear screen after displaying decoded message
         TIMEOUT% = 2 ' How long the program will wait before clearing the screen
         RNDFILE% = 1 ' Randomly generate filenames
+        B64LMSG% = 1 ' Encodes Final Encrypted Message into Base64 !REQUIRES agsb64.bas PLUGIN! !PREVENTS SAVING MSG AND KEY SEPARATELY!
 
         goto 110
 
@@ -60,7 +61,7 @@
     40  ?
         ? " AEGIS v" ver$ " Encryption Utility for TELEHACK                   "
         ?
-        ? " Usage:   aegis <function> [filename] [receipient]                 "
+        ? " Usage:   aegis <function> [filename] [recipient]                  "
         ?
         ? "          Prefix all functions with -, --, /, or nothing at all    "
         ? "                                                                   "
@@ -92,13 +93,14 @@
         ? " Settings:                                                         "
         ?
 
-        if debug65% = 0 then if debug64% = 0 then if visible% = 0 then if clscren% = 0 then if rndfile% = 0 then NOPTION% = 1
+        if debug65% = 0 then if debug64% = 0 then if visible% = 0 then if clscren% = 0 then if rndfile% = 0 then if b64lmsg% = 0 then NOPTION% = 1
         if noption% = 1 then ? "          All Optional Settings Disabled"
         if debug65% = 1 then ? "          Index 65 Debug Enabled"
         if debug64% = 1 then ? "          Base64 Debug Enabled"   
         if visible% = 1 then ? "          Typing Visibility Enabled"
         if clscren% = 1 then ? "          Clear Screen Enabled"
         if rndfile% = 1 then ? "          Random File Names Enabled"
+        if b64lmsg% = 1 then ? "          Base64 Layering Enabled"
         ?
 
         END
@@ -169,6 +171,7 @@
         ' READ DATA FROM FILE AND PUT IT IN CULL$
         141 ? : input "Filename: ", ef$
         142 if ef$ = "" or ef$ = spc$(len(ef$)) then ? "%error - blank filename" : goto 141
+            if B64LMSG% = 1 then th_exec "run agsb64.bas d " + ef$ + ".ags"
             open ef$ + ".ags", as #1
             fatalerroronedebug$ = ef$ + ".ags"
         143 if typ(1) = 3 then goto 144
@@ -328,12 +331,14 @@
 
     200 ' FILE OUTPUT FUNCTIONS
             if ups$( argv$(1) ) <> "E" then goto 201
+            if B64LMSG% = 1 then goto 201
             ? : ? "Save cipher and key separately? (y/N)" ;
             keychoice$ = inkey$
             if keychoice$ = "y" then goto 250
         201 open file$ + ".ags", as #1 : ' FATAL ERROR 02: type 'aegis -faq' for details
             ?# 1, encryptedmsg$ + "l" + otp$ + " "
             close #1
+            if B64LMSG% = 1 then th_exec "run agsb64.bas e " + file$ + ".ags"
             ? : th_exec "ls " + file$ + ".ags"
             if send_now then now$ = "y" : goto 203
             ? "Send now? [y/N] " ; : now$ = inkey$ : ? now$ : if now$ = "y" then goto 202
