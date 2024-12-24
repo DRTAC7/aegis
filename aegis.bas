@@ -182,7 +182,7 @@
         144 close #1
 
     150 ' SPLIT THE DATA INTO MSG AND KEY
-            if MSGLYER% = 1 then cull$ = th_sed$(th_b64d$(cull$),"\n","","g") if DEBUGUU% = 1 then ? "UUD: " + cull$ : cull$ = th_sed$(th_uud$(cull$),"\n","","g")
+            if MSGLYER% = 1 then cull$ = th_sed$(th_b64d$(cull$),"\n","","g") : cull$ = th_sed$(th_uud$(cull$),"\n","","g") : if DEBUGUU% = 1 then ? "UUD: " + cull$
             if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : scratch fatalerroronedebug$ ; out$ : goto 9999
             readmsg$ = ""
         151 m$ = mid$(cull$, m, 1) : ' FATAL ERROR 01: Type 'aegis -faq' for details
