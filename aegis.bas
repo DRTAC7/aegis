@@ -1,35 +1,35 @@
 
-' MIT License                                               _______________      
-'                                                           \......|....../      
-' Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /       
-' Copyright:      (c) 2024 telehack.com/u/drtac7              \....|..../        
-' Website:        https://www.github.com/DRTAC7/aegis          \...|.../         
-' Author:         drtac7                                        \..|../          
-' Contributors:   searinox, zcj                                  \.|./           
-' License:        MIT                                             \|/            
-'                                                                                
-' Permission is hereby granted, free of charge, to any person obtaining a copy   
-' of this software and associated documentation files (the "Software"), to deal  
-' in the Software without restriction, including without limitation the rights   
-' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      
-' copies of the Software, and to permit persons to whom the Software is          
-' furnished to do so, subject to the following conditions:                       
-'                                                                                
-' The above copyright notice and this permission notice shall be included in all 
-' copies or substantial portions of the Software.                                
-'                                                                                
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     
-' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       
-' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    
-' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         
-' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
-' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
-' SOFTWARE.                                                                      
- 
+' MIT License                                               _______________
+'                                                           \......|....../
+' Name:           AEGIS - Plaintext Encryption Utility       \ A E G I S /
+' Copyright:      (c) 2024 telehack.com/u/drtac7              \....|..../
+' Website:        https://www.github.com/DRTAC7/aegis          \...|.../
+' Author:         drtac7                                        \..|../
+' Contributors:   searinox, zcj                                  \.|./
+' License:        MIT                                             \|/
+'
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
+
 ' IF YOU WISH TO MAKE OFFICIAL MODIFICATIONS TO THIS SOFTWARE
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
-    
+
     10  ver$ = "3.1.5"
 
         ' GLOBAL SETTINGS (set to 1 to enable)
@@ -57,7 +57,7 @@
         ? "     FATAL ERROR 02 will occur if:                                                                    "
         ? "         - you attempt to name the encrypted file '*'                                                 "
         ? "         - you are using a mobile device (may not always occur)                                       "
-        
+
         END
 
     40  ?
@@ -95,10 +95,10 @@
         ? " Settings:                                                         "
         ?
 
-        if not ( debug65% or debug64% or debuguu% or visible% or clscren% or clskeyp% or rndfile% or msglyer% ) then NOPTION% = 1
+        NOPTION% = not ( debug65% or debug64% or debuguu% or visible% or clscren% or clskeyp% or rndfile% or msglyer% )
         if noption% then ? "          All Optional Settings Disabled"
         if debug65% then ? "          Index 65 Debug Enabled"
-        if debug64% then ? "          Base64 Debug Enabled"   
+        if debug64% then ? "          Base64 Debug Enabled"
         if debuguu% then ? "          UUE Debug Enabled"
         if visible% then ? "          Typing Visibility Enabled"
         if clscren% then ? "          Clear Screen Enabled"
@@ -110,7 +110,6 @@
         END
 
     110 ' Check process table for ftpd instance
-        ftpdCheck$ = ""
         th_exec "\ps | grep ftpd | cut -f3" ; ftpdCheck$
         if ftpdCheck$ = "" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
 
@@ -156,7 +155,7 @@
             e$ = mid$(emsg$, e, 1)
             index$ = index$ + array$(asc(e$))
         next
-        if DEBUG65% = 1 then ? : ? "Index 65 Hash: " + index$
+        if DEBUG65% then ? : ? "Index 65 Hash: " + index$
 
     130 ' ENCRYPT
         for o = 1 to len(index$)
@@ -164,8 +163,8 @@
             key$ = str$(nint(rnd(9)))
             otp$ = otp$ + key$
             num% = val(o$) - val(key$)
-            if num% < 0 then num% = num% + 10    
-            encryptedmsg$ = encryptedmsg$ + str$(num%)    
+            if num% < 0 then num% = num% + 10
+            encryptedmsg$ = encryptedmsg$ + str$(num%)
         next
         return
 
@@ -176,13 +175,13 @@
         142 if ef$ = "" or ef$ = spc$(len(ef$)) then ? "%error - blank filename" : goto 141
             open ef$ + ".ags", as #1
             fatalerroronedebug$ = ef$ + ".ags"
-        143 if typ(1) = 3 then goto 144
+        143 if eof(1) then goto 144
             input# 1, cull$
             goto 143
         144 close #1
 
     150 ' SPLIT THE DATA INTO MSG AND KEY
-            if MSGLYER% = 1 then cull$ = th_sed$(th_b64d$(cull$),"\n","","g") if DEBUGUU% = 1 then ? "UUD: " + cull$ : cull$ = th_sed$(th_uud$(cull$),"\n","","g")
+            if MSGLYER% then cull$ = th_sed$(th_b64d$(cull$),"\n","","g") : cull$ = th_sed$(th_uud$(cull$),"\n","","g") : if DEBUGUU% then ? "UUD: " + cull$
             if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : scratch fatalerroronedebug$ ; out$ : goto 9999
             readmsg$ = ""
         151 m$ = mid$(cull$, m, 1) : ' FATAL ERROR 01: Type 'aegis -faq' for details
@@ -209,7 +208,7 @@
             dnum$ = dnum$ + str$(dnum%)
         next
     161 dindex$ = dnum$
-        if DEBUG65% = 1 then ? : ? "Index65 Hash: " + dindex$
+        if DEBUG65% then ? : ? "Index65 Hash: " + dindex$
 
     170 ' DECODE
         for t = 1 to len(dindex$)
@@ -283,7 +282,7 @@
             if both$ = "58" then t = t + 1 : db64$ = db64$ + "6"
             if both$ = "59" then t = t + 1 : db64$ = db64$ + "7"
             if both$ = "60" then t = t + 1 : db64$ = db64$ + "8"
-            if both$ = "61" then t = t + 1 : db64$ = db64$ + "9"        
+            if both$ = "61" then t = t + 1 : db64$ = db64$ + "9"
 
             ' SPECIAL CHARACTERS
             if both$ = "62" then t = t + 1 : db64$ = db64$ + "+"
@@ -292,50 +291,50 @@
         next
 
     180 ' CONVERT Base64 to Plaintext
-            if DEBUG64% = 1 then ? : ? "Base64: " + db64$
+            if DEBUG64% then ? : ? "Base64: " + db64$
             ? : ? "Decrypted Message: " + th_b64d$(db64$)
             ?
             sleep 0.5 : th_exec "rm " + ef$ + ".ags"
-            if CLSKEYP% = 1 then ? : ? "Press any key to clear screen." : pause$ = inkey$ : CLS : goto 9999
-            if CLSCREN% = 1 then sleep TIMEOUT% : CLS
+            if CLSKEYP% then ? : ? "Press any key to clear screen." : pause$ = inkey$ : CLS : goto 9999
+            if CLSCREN% then sleep TIMEOUT% : CLS
             goto 9999
 
-    181 ' VISIBLE MESSAGE INPUT AND FILE NAMING     
+    181 ' VISIBLE MESSAGE INPUT AND FILE NAMING
         182 input "Message: ", msg$
             if msg$ = "" then goto 182
-            if RNDFILE% = 1 then file$ = str$(nint(rnd(999))) : goto 196
+            if RNDFILE% then file$ = str$(nint(rnd(999))) : goto 196
         183 input "Filename: ", file$
             if file$ = "" then goto 183
-            if len(file$) < 1 then goto 183
+            if not len(file$) then goto 183
             if len(file$) > 3 then ? : ? "Filename must not exceed 3 characters" : goto 183
             goto 196
 
     190 ' CONCEALED MESSAGE INPUT AND FILE NAMING
             ?
-            if visible% = 1 then goto 181
+            if visible% then goto 181
         191 msg$ = "" : ? "Message: " ;
         192 hide$ = inkey$ : if hide$ = chr$(13) then goto 193
             if (hide$ = chr$(127) or hide$ = chr$(8)) and len(msg$) > 0 then msg$ = left$( msg$, abs( len( msg$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hide$ = chr$(127) or hide$ = chr$(8) then goto 192
             msg$ = msg$ + hide$ : ? "*" ;
             goto 192
-            ? : if len(msg$) < 1 then goto 191
-        193 if RNDFILE% = 1 then file$ = str$(nint(rnd(999))) : goto 196
+            ? : if not len(msg$) then goto 191
+        193 if RNDFILE% then file$ = str$(nint(rnd(999))) : goto 196
             file$ = "" : ? : ? "Filename: " ;
         194 hides$ = inkey$ : if hides$ = chr$(13) then goto 195
             if (hides$ = chr$(127) or hides$ = chr$(8)) and len(file$) > 0 then file$ = left$( file$, abs( len( file$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hides$ = chr$(127) or hides$ = chr$(8) then goto 194
             file$ = file$ + hides$ : ? "*" ;
             goto 194
-        195 if len(file$) < 1 then goto 193
+        195 if not len(file$) then goto 193
             if len(file$) > 3 then ? : ? "Filename must not exceed 3 characters" : goto 193
         196 emsg$ = th_b64e$(msg$)
-            if DEBUG64% = 1 then ? : ? "Base64: " + emsg$
+            if DEBUG64% then ? : ? "Base64: " + emsg$
             gosub 120
 
     200 ' FILE OUTPUT FUNCTIONS
             if ups$( argv$(1) ) <> "E" then goto 201
-            if MSGLYER% = 1 then goto 201
+            if MSGLYER% then goto 201
             ? : ? "Save cipher and key separately? (y/N)" ;
             keychoice$ = inkey$
             if keychoice$ = "y" then goto 250
@@ -361,7 +360,7 @@
         th_exec "send /accept=" + argv$(2) + ".ags " + argv$(3)
         ef$ = argv$(2)
         goto 142
-    
+
     220 ' ? THE CONTENTS OF A .AGS FILE
         ? "--- Embedded ---" : ? : th_exec "cat " + argv$(2) + ".ags" : ?
         ? "--- Cipher ---" : ? : th_exec "cat " + argv$(2) + ".agsc" : ?
@@ -382,8 +381,8 @@
             th_exec "send /attach /stop"
             scratch argv$(2) + ".ags" ; out$
             ? "Message File Deleted"
-            goto 9999     
-    
+            goto 9999
+
     250 ' SAVE CIPHER AND KEY SEPARATELY
          open file$ + ".agsc", as #1
          ?# 1, encryptedmsg$
@@ -397,19 +396,19 @@
 
     260 ' FILE COMBINATION
              open argv$(2) + ".agsc", as #1
-         261 if typ(1) = 3 then goto 262
+         261 if eof(1) then goto 262
              input# 1, cipher$
              goto 261
          262 close #1
              open argv$(2) + ".agsk", as #1
-         263 if typ(1) = 3 then goto 264
+         263 if eof(1) then goto 264
              input# 1, otpkey$
              goto 263
          264 close #1
              open argv$(2) + ".ags", as #1
              ?# 1, cipher$ + "l" + otpkey$ + " "
              close #1
-             ? "Files combined as: " : th_exec "ls " + argv$(2) + ".ags"     
+             ? "Files combined as: " : th_exec "ls " + argv$(2) + ".ags"
              goto 9999
 
     270 ' PURGE
