@@ -16,7 +16,7 @@ Plaintext Encryption Utility for Telehack.com
    - Includes a version written in Perl that contains the ability to convert an extant .txt file to an encrypted .ags file
 
 ```
- AEGIS v3.0 Encryption Utility for TELEHACK                   
+ AEGIS v3.1 Encryption Utility for TELEHACK                   
 
  Usage:   aegis <function> [filename] [recipient]                 
 
