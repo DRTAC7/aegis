@@ -227,7 +227,7 @@
             if both$ = "08" then t = t + 1 : db64$ = db64$ + ups$("I")
             if both$ = "09" then t = t + 1 : db64$ = db64$ + ups$("J")
             if both$ = "10" then t = t + 1 : db64$ = db64$ + ups$("K")
-            if both$ = "11" then t = t + 1 : db64$ = db64$ + ups$("L")                                           
+            if both$ = "11" then t = t + 1 : db64$ = db64$ + ups$("L")
             if both$ = "12" then t = t + 1 : db64$ = db64$ + ups$("M")
             if both$ = "13" then t = t + 1 : db64$ = db64$ + ups$("N")
             if both$ = "14" then t = t + 1 : db64$ = db64$ + ups$("O")
@@ -235,7 +235,7 @@
             if both$ = "16" then t = t + 1 : db64$ = db64$ + ups$("Q")
             if both$ = "17" then t = t + 1 : db64$ = db64$ + ups$("R")
             if both$ = "18" then t = t + 1 : db64$ = db64$ + ups$("S")
-            if both$ = "19" then t = t + 1 : db64$ = db64$ + ups$("T")                                           
+            if both$ = "19" then t = t + 1 : db64$ = db64$ + ups$("T")
             if both$ = "20" then t = t + 1 : db64$ = db64$ + ups$("U")
             if both$ = "21" then t = t + 1 : db64$ = db64$ + ups$("V")
             if both$ = "22" then t = t + 1 : db64$ = db64$ + ups$("W")
@@ -246,7 +246,7 @@
             ' LOWERCASE
             if both$ = "26" then t = t + 1 : db64$ = db64$ + "a"
             if both$ = "27" then t = t + 1 : db64$ = db64$ + "b"
-            if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"                                                 
+            if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"
             if both$ = "29" then t = t + 1 : db64$ = db64$ + "d"
             if both$ = "30" then t = t + 1 : db64$ = db64$ + "e"
             if both$ = "31" then t = t + 1 : db64$ = db64$ + "f"
@@ -271,7 +271,7 @@
             if both$ = "50" then t = t + 1 : db64$ = db64$ + "y"
             if both$ = "51" then t = t + 1 : db64$ = db64$ + "z"
 
-            ' NUMBERS                                                       
+            ' NUMBERS
             if both$ = "52" then t = t + 1 : db64$ = db64$ + "0"
             if both$ = "53" then t = t + 1 : db64$ = db64$ + "1"
             if both$ = "54" then t = t + 1 : db64$ = db64$ + "2"
