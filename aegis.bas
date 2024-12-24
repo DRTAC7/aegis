@@ -215,8 +215,10 @@
             second$ = mid$(dindex$, t + 1, 1)
             both$ = first$ + second$
 
-            ' UPPERCASE                                                                                          if both$ = "00" then t = t + 1 : db64$ = db64$ + ups$("A")
-            if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")                                           if both$ = "02" then t = t + 1 : db64$ = db64$ + ups$("C")
+            ' UPPERCASE
+            if both$ = "00" then t = t + 1 : db64$ = db64$ + ups$("A")
+            if both$ = "01" then t = t + 1 : db64$ = db64$ + ups$("B")
+            if both$ = "02" then t = t + 1 : db64$ = db64$ + ups$("C")
             if both$ = "03" then t = t + 1 : db64$ = db64$ + ups$("D")
             if both$ = "04" then t = t + 1 : db64$ = db64$ + ups$("E")
             if both$ = "05" then t = t + 1 : db64$ = db64$ + ups$("F")
@@ -224,15 +226,19 @@
             if both$ = "07" then t = t + 1 : db64$ = db64$ + ups$("H")
             if both$ = "08" then t = t + 1 : db64$ = db64$ + ups$("I")
             if both$ = "09" then t = t + 1 : db64$ = db64$ + ups$("J")
-            if both$ = "10" then t = t + 1 : db64$ = db64$ + ups$("K")                                           if both$ = "11" then t = t + 1 : db64$ = db64$ + ups$("L")                                           if both$ = "12" then t = t + 1 : db64$ = db64$ + ups$("M")
+            if both$ = "10" then t = t + 1 : db64$ = db64$ + ups$("K")
+            if both$ = "11" then t = t + 1 : db64$ = db64$ + ups$("L")                                           
+            if both$ = "12" then t = t + 1 : db64$ = db64$ + ups$("M")
             if both$ = "13" then t = t + 1 : db64$ = db64$ + ups$("N")
             if both$ = "14" then t = t + 1 : db64$ = db64$ + ups$("O")
             if both$ = "15" then t = t + 1 : db64$ = db64$ + ups$("P")
             if both$ = "16" then t = t + 1 : db64$ = db64$ + ups$("Q")
             if both$ = "17" then t = t + 1 : db64$ = db64$ + ups$("R")
             if both$ = "18" then t = t + 1 : db64$ = db64$ + ups$("S")
-            if both$ = "19" then t = t + 1 : db64$ = db64$ + ups$("T")                                           if both$ = "20" then t = t + 1 : db64$ = db64$ + ups$("U")
-            if both$ = "21" then t = t + 1 : db64$ = db64$ + ups$("V")                                           if both$ = "22" then t = t + 1 : db64$ = db64$ + ups$("W")
+            if both$ = "19" then t = t + 1 : db64$ = db64$ + ups$("T")                                           
+            if both$ = "20" then t = t + 1 : db64$ = db64$ + ups$("U")
+            if both$ = "21" then t = t + 1 : db64$ = db64$ + ups$("V")
+            if both$ = "22" then t = t + 1 : db64$ = db64$ + ups$("W")
             if both$ = "23" then t = t + 1 : db64$ = db64$ + ups$("X")
             if both$ = "24" then t = t + 1 : db64$ = db64$ + ups$("Y")
             if both$ = "25" then t = t + 1 : db64$ = db64$ + ups$("Z")
@@ -240,13 +246,17 @@
             ' LOWERCASE
             if both$ = "26" then t = t + 1 : db64$ = db64$ + "a"
             if both$ = "27" then t = t + 1 : db64$ = db64$ + "b"
-            if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"                                                 if both$ = "29" then t = t + 1 : db64$ = db64$ + "d"                                                 if both$ = "30" then t = t + 1 : db64$ = db64$ + "e"
+            if both$ = "28" then t = t + 1 : db64$ = db64$ + "c"                                                 
+            if both$ = "29" then t = t + 1 : db64$ = db64$ + "d"
+            if both$ = "30" then t = t + 1 : db64$ = db64$ + "e"
             if both$ = "31" then t = t + 1 : db64$ = db64$ + "f"
             if both$ = "32" then t = t + 1 : db64$ = db64$ + "g"
-            if both$ = "33" then t = t + 1 : db64$ = db64$ + "h"                                                 if both$ = "34" then t = t + 1 : db64$ = db64$ + "i"
+            if both$ = "33" then t = t + 1 : db64$ = db64$ + "h"
+            if both$ = "34" then t = t + 1 : db64$ = db64$ + "i"
             if both$ = "35" then t = t + 1 : db64$ = db64$ + "j"
             if both$ = "36" then t = t + 1 : db64$ = db64$ + "k"
-            if both$ = "37" then t = t + 1 : db64$ = db64$ + "l"                                                 if both$ = "38" then t = t + 1 : db64$ = db64$ + "m"
+            if both$ = "37" then t = t + 1 : db64$ = db64$ + "l"
+            if both$ = "38" then t = t + 1 : db64$ = db64$ + "m"
             if both$ = "39" then t = t + 1 : db64$ = db64$ + "n"
             if both$ = "40" then t = t + 1 : db64$ = db64$ + "o"
             if both$ = "41" then t = t + 1 : db64$ = db64$ + "p"
@@ -254,13 +264,15 @@
             if both$ = "43" then t = t + 1 : db64$ = db64$ + "r"
             if both$ = "44" then t = t + 1 : db64$ = db64$ + "s"
             if both$ = "45" then t = t + 1 : db64$ = db64$ + "t"
-            if both$ = "46" then t = t + 1 : db64$ = db64$ + "u"                                                 if both$ = "47" then t = t + 1 : db64$ = db64$ + "v"
+            if both$ = "46" then t = t + 1 : db64$ = db64$ + "u"
+            if both$ = "47" then t = t + 1 : db64$ = db64$ + "v"
             if both$ = "48" then t = t + 1 : db64$ = db64$ + "w"
             if both$ = "49" then t = t + 1 : db64$ = db64$ + "x"
             if both$ = "50" then t = t + 1 : db64$ = db64$ + "y"
             if both$ = "51" then t = t + 1 : db64$ = db64$ + "z"
 
-            ' NUMBERS                                                                                            if both$ = "52" then t = t + 1 : db64$ = db64$ + "0"
+            ' NUMBERS                                                       
+            if both$ = "52" then t = t + 1 : db64$ = db64$ + "0"
             if both$ = "53" then t = t + 1 : db64$ = db64$ + "1"
             if both$ = "54" then t = t + 1 : db64$ = db64$ + "2"
             if both$ = "55" then t = t + 1 : db64$ = db64$ + "3"
@@ -303,10 +315,12 @@
         192 hide$ = inkey$ : if hide$ = chr$(13) then goto 193
             if (hide$ = chr$(127) or hide$ = chr$(8)) and len(msg$) > 0 then msg$ = left$( msg$, abs( len( msg$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hide$ = chr$(127) or hide$ = chr$(8) then goto 192
-            msg$ = msg$ + hide$ : ? "*" ;                                                                        goto 192
+            msg$ = msg$ + hide$ : ? "*" ;                                                                        
+            goto 192
             ? : if not len(msg$) then goto 191
         193 if RNDFILE% then file$ = str$(nint(rnd(999))) : goto 196
-            file$ = "" : ? : ? "Filename: " ;                                                                194 hides$ = inkey$ : if hides$ = chr$(13) then goto 195
+            file$ = "" : ? : ? "Filename: " ;                                                                
+        194 hides$ = inkey$ : if hides$ = chr$(13) then goto 195
             if (hides$ = chr$(127) or hides$ = chr$(8)) and len(file$) > 0 then file$ = left$( file$, abs( len( file$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hides$ = chr$(127) or hides$ = chr$(8) then goto 194
             file$ = file$ + hides$ : ? "*" ;
@@ -320,7 +334,8 @@
     200 ' FILE OUTPUT FUNCTIONS
             if ups$( argv$(1) ) <> "E" then goto 201
             if MSGLYER% then goto 201
-            ? : ? "Save cipher and key separately? (y/N)" ;                                                      keychoice$ = inkey$
+            ? : ? "Save cipher and key separately? (y/N)" ;                                                      
+            keychoice$ = inkey$
             if keychoice$ = "y" then goto 250
         201 open file$ + ".ags", as #1 : ' FATAL ERROR 02: type 'aegis -faq' for details
             uueLayer$ = th_sed$(th_uue$(encryptedmsg$ + "l" + otp$ + " "),"\n","","g") : if DEBUGUU% = 1 then ? : ? "UUE: " + uueLayer$                                                                               b64Layer$ = th_sed$(th_b64e$(uueLayer$),"\n","","g") : if DEBUG64% = 1 then ? "Base64 Layer: " + b64Layer$
@@ -340,7 +355,8 @@
             goto 9999
 
     210 ' ACCEPT and DECRYPT
-        th_exec "send /accept=" + argv$(2) + ".ags " + argv$(3)                                              ef$ = argv$(2)
+        th_exec "send /accept=" + argv$(2) + ".ags " + argv$(3)                                              
+        ef$ = argv$(2)
         goto 142
 
     220 ' ? THE CONTENTS OF A .AGS FILE
@@ -348,7 +364,8 @@
         ? "--- Cipher ---" : ? : th_exec "cat " + argv$(2) + ".agsc" : ?
         ? "--- Key ---" : ? : th_exec "cat " + argv$(2) + ".agsk" : ?
         goto 9999
-                                                                                                         230 ' LIST ALL .AGS FILES
+                                                                                                         
+    230 ' LIST ALL .AGS FILES
          no_files$ = "%glob: file not found"
          ? "--- Embedded files ---" : ? : th_exec "ls *.ags" ; out$ : ? th_sed$(out$, no_files$, "%no aegis files found")
          ? "--- Cipher files ---" : ? : th_exec "ls *.agsc" ; out$ : ? th_sed$(out$, no_files$, "%no aegis files found")
@@ -369,7 +386,9 @@
          ?# 1, encryptedmsg$
          close #1
          ? : th_exec "ls " + file$ + ".agsc"
-         open file$ + ".agsk", as #1                                                                          ?# 1, otp$                                                                                           close #1
+         open file$ + ".agsk", as #1                                                                          
+         ?# 1, otp$                                                                                           
+         close #1
          th_exec "ls " + file$ + ".agsk"
          goto 9999
 
@@ -394,7 +413,8 @@
              ext$ = ".ags" : gosub 271
              ext$ = ".agsc" : gosub 271
              ext$ = ".agsk" : gosub 271
-             goto 9999                                                                                        271 th_exec "ls *" + ext$ ; out$
+             goto 9999                                                                                        
+         271 th_exec "ls *" + ext$ ; out$
              if th_re( out$, "%glob" ) then ? "%no " ext$ " files found" : return
              th_exec "rm *" + ext$
              return
