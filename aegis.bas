@@ -30,17 +30,19 @@
 ' PLEASE SEND A MAIL TO DRTAC7 ON TELEHACK
 ' AND HE WILL ADD YOU TO THE REPO, WHERE YOU CAN CREATE A PULL REQUEST
     
-    10  ver$ = "3.0"
+    10  ver$ = "3.1.5"
 
         ' GLOBAL SETTINGS (set to 1 to enable)
 
         DEBUG64% = 0 ' Display Base64 upon encoding
         DEBUG65% = 0 ' Display Index65 upon encryption
+        DEBUGUU% = 0 ' Display UUE Output Upon encoding
         VISIBLE% = 0 ' Don't conceal message text or filename with * when typing
         CLSCREN% = 1 ' Clear screen after displaying decoded message
         TIMEOUT% = 2 ' How long the program will wait before clearing the screen
+        CLSKEYP% = 0 ' Clear screen after displaying message on keypress !Overrides TIMEOUT setting!
         RNDFILE% = 1 ' Randomly generate filenames
-        B64LMSG% = 1 ' Encodes Final Encrypted Message into Base64 !REQUIRES agsb64.bas PLUGIN! !PREVENTS SAVING MSG AND KEY SEPARATELY!
+        MSGLYER% = 1 ' Encodes Final Encrypted Message into uucode and Base64 !PREVENTS SAVING MSG AND KEY SEPARATELY!
 
         goto 110
 
@@ -93,25 +95,26 @@
         ? " Settings:                                                         "
         ?
 
-        if debug65% = 0 then if debug64% = 0 then if visible% = 0 then if clscren% = 0 then if rndfile% = 0 then if b64lmsg% = 0 then NOPTION% = 1
-        if noption% = 1 then ? "          All Optional Settings Disabled"
-        if debug65% = 1 then ? "          Index 65 Debug Enabled"
-        if debug64% = 1 then ? "          Base64 Debug Enabled"   
-        if visible% = 1 then ? "          Typing Visibility Enabled"
-        if clscren% = 1 then ? "          Clear Screen Enabled"
-        if rndfile% = 1 then ? "          Random File Names Enabled"
-        if b64lmsg% = 1 then ? "          Base64 Layering Enabled"
+        if not ( debug65% or debug64% or debuguu% or visible% or clscren% or clskeyp% or rndfile% or msglyer% ) then NOPTION% = 1
+        if noption% then ? "          All Optional Settings Disabled"
+        if debug65% then ? "          Index 65 Debug Enabled"
+        if debug64% then ? "          Base64 Debug Enabled"   
+        if debuguu% then ? "          UUE Debug Enabled"
+        if visible% then ? "          Typing Visibility Enabled"
+        if clscren% then ? "          Clear Screen Enabled"
+        if clskeyp% then ? "          Clear Screen on Key Press Enabled"
+        if rndfile% then ? "          Random File Names Enabled"
+        if msglyer% then ? "          Additional Layering Enabled"
         ?
 
         END
 
     110 ' Check process table for ftpd instance
         ftpdCheck$ = ""
-        th_exec "ps | grep ftpd | cut -c 8-11" ; ftpdCheck$
-        ftpdCheck$ = th_re$( ftpdCheck$, "ftpd" )
-        if ftpdCheck$ <> "ftpd" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
+        th_exec "\ps | grep ftpd | cut -f3" ; ftpdCheck$
+        if ftpdCheck$ = "" then ? "%WARNING: FTPD.EXE NOT DETECTED IN PROCESS TABLE!" : ? "AEGIS REQUIRES FTPD.EXE TO FUNCTION!" : END
 
-        ' Generate ASCII Lookup Table for Encoding /// provided by searinox
+    113 ' Generate ASCII Lookup Table for Encoding /// provided by searinox
         counter = 0
         for i = 65 to 90
             tmp$ = str$(counter)
@@ -171,7 +174,6 @@
         ' READ DATA FROM FILE AND PUT IT IN CULL$
         141 ? : input "Filename: ", ef$
         142 if ef$ = "" or ef$ = spc$(len(ef$)) then ? "%error - blank filename" : goto 141
-            if B64LMSG% = 1 then th_exec "run agsb64.bas d " + ef$ + ".ags"
             open ef$ + ".ags", as #1
             fatalerroronedebug$ = ef$ + ".ags"
         143 if typ(1) = 3 then goto 144
@@ -180,6 +182,7 @@
         144 close #1
 
     150 ' SPLIT THE DATA INTO MSG AND KEY
+            if MSGLYER% = 1 then cull$ = th_sed$(th_b64d$(cull$),"\n","","g") if DEBUGUU% = 1 then ? "UUD: " + cull$ : cull$ = th_sed$(th_uud$(cull$),"\n","","g")
             if cull$ = "" then ? "FATAL ERROR 01: Type 'aegis -faq' for details" : scratch fatalerroronedebug$ ; out$ : goto 9999
             readmsg$ = ""
         151 m$ = mid$(cull$, m, 1) : ' FATAL ERROR 01: Type 'aegis -faq' for details
@@ -289,12 +292,13 @@
         next
 
     180 ' CONVERT Base64 to Plaintext
-        if DEBUG64% = 1 then ? : ? "Base64: " + db64$
-        ? : ? "Decrypted Message: " + th_b64d$(db64$)
-        ?
-        sleep 0.5 : th_exec "rm " + ef$ + ".ags" ' scratch ef$ + ".ags" ; out$
-        if CLSCREN% = 1 then sleep TIMEOUT% : CLS
-        goto 9999
+            if DEBUG64% = 1 then ? : ? "Base64: " + db64$
+            ? : ? "Decrypted Message: " + th_b64d$(db64$)
+            ?
+            sleep 0.5 : th_exec "rm " + ef$ + ".ags"
+            if CLSKEYP% = 1 then ? : ? "Press any key to clear screen." : pause$ = inkey$ : CLS : goto 9999
+            if CLSCREN% = 1 then sleep TIMEOUT% : CLS
+            goto 9999
 
     181 ' VISIBLE MESSAGE INPUT AND FILE NAMING     
         182 input "Message: ", msg$
@@ -331,22 +335,23 @@
 
     200 ' FILE OUTPUT FUNCTIONS
             if ups$( argv$(1) ) <> "E" then goto 201
-            if B64LMSG% = 1 then goto 201
+            if MSGLYER% = 1 then goto 201
             ? : ? "Save cipher and key separately? (y/N)" ;
             keychoice$ = inkey$
             if keychoice$ = "y" then goto 250
         201 open file$ + ".ags", as #1 : ' FATAL ERROR 02: type 'aegis -faq' for details
-            ?# 1, encryptedmsg$ + "l" + otp$ + " "
-            close #1
-            if B64LMSG% = 1 then th_exec "run agsb64.bas e " + file$ + ".ags"
+            uueLayer$ = th_sed$(th_uue$(encryptedmsg$ + "l" + otp$ + " "),"\n","","g") : if DEBUGUU% = 1 then ? : ? "UUE: " + uueLayer$
+            b64Layer$ = th_sed$(th_b64e$(uueLayer$),"\n","","g") : if DEBUG64% = 1 then ? "Base64 Layer: " + b64Layer$
+            ?# 1, b64Layer$
+        203 close #1
             ? : th_exec "ls " + file$ + ".ags"
-            if send_now then now$ = "y" : goto 203
-            ? "Send now? [y/N] " ; : now$ = inkey$ : ? now$ : if now$ = "y" then goto 202
+            if send_now then now$ = "y" : goto 205
+            ? "Send now? [y/N] " ; : now$ = inkey$ : ? now$ : if now$ = "y" then goto 204
             goto 9999
-        202 input "To: ", to$ : if to$ = "" then ? "You must select a user!" : goto 202 : if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
-        203 if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 202
-        204 th_exec "send /bell /attach=" + file$ + ".ags " + to$
-            ? "[R]esend if the file transfer fails." : ? "[D]elete file, cancel send, and close program." :  ? "^C to close. Request to send will persist." : if inkey$ <> "d" then goto 204
+        204 input "To: ", to$ : if to$ = "" then ? "You must select a user!" : goto 204 : if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 204
+        205 if to$ = user$ then ? "You cannot send a file to yourself! Select another user." : goto 204
+        206 th_exec "send /bell /attach=" + file$ + ".ags " + to$
+            ? "[R]esend if the file transfer fails." : ? "[D]elete file, cancel send, and close program." :  ? "^C to close. Request to send will persist." : if inkey$ <> "d" then goto 206
             th_exec "send /attach /stop"
             scratch file$ + ".ags" ; out$
             ? "Message File Deleted"
