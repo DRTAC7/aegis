@@ -315,11 +315,11 @@
         192 hide$ = inkey$ : if hide$ = chr$(13) then goto 193
             if (hide$ = chr$(127) or hide$ = chr$(8)) and len(msg$) > 0 then msg$ = left$( msg$, abs( len( msg$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hide$ = chr$(127) or hide$ = chr$(8) then goto 192
-            msg$ = msg$ + hide$ : ? "*" ;                                                                        
+            msg$ = msg$ + hide$ : ? "*" ;
             goto 192
             ? : if not len(msg$) then goto 191
         193 if RNDFILE% then file$ = str$(nint(rnd(999))) : goto 196
-            file$ = "" : ? : ? "Filename: " ;                                                                
+            file$ = "" : ? : ? "Filename: " ;
         194 hides$ = inkey$ : if hides$ = chr$(13) then goto 195
             if (hides$ = chr$(127) or hides$ = chr$(8)) and len(file$) > 0 then file$ = left$( file$, abs( len( file$ )-1 ) ) : ? chr$(8) + " " + chr$(8) ;
             if hides$ = chr$(127) or hides$ = chr$(8) then goto 194
@@ -334,11 +334,12 @@
     200 ' FILE OUTPUT FUNCTIONS
             if ups$( argv$(1) ) <> "E" then goto 201
             if MSGLYER% then goto 201
-            ? : ? "Save cipher and key separately? (y/N)" ;                                                      
+            ? : ? "Save cipher and key separately? (y/N)" ;
             keychoice$ = inkey$
             if keychoice$ = "y" then goto 250
         201 open file$ + ".ags", as #1 : ' FATAL ERROR 02: type 'aegis -faq' for details
-            uueLayer$ = th_sed$(th_uue$(encryptedmsg$ + "l" + otp$ + " "),"\n","","g") : if DEBUGUU% = 1 then ? : ? "UUE: " + uueLayer$                                                                               b64Layer$ = th_sed$(th_b64e$(uueLayer$),"\n","","g") : if DEBUG64% = 1 then ? "Base64 Layer: " + b64Layer$
+            uueLayer$ = th_sed$(th_uue$(encryptedmsg$ + "l" + otp$ + " "),"\n","","g") : if DEBUGUU% = 1 then ? : ? "UUE: " + uueLayer$
+            b64Layer$ = th_sed$(th_b64e$(uueLayer$),"\n","","g") : if DEBUG64% = 1 then ? "Base64 Layer: " + b64Layer$
             ?# 1, b64Layer$
         203 close #1
             ? : th_exec "ls " + file$ + ".ags"
@@ -355,7 +356,7 @@
             goto 9999
 
     210 ' ACCEPT and DECRYPT
-        th_exec "send /accept=" + argv$(2) + ".ags " + argv$(3)                                              
+        th_exec "send /accept=" + argv$(2) + ".ags " + argv$(3)
         ef$ = argv$(2)
         goto 142
 
@@ -364,7 +365,7 @@
         ? "--- Cipher ---" : ? : th_exec "cat " + argv$(2) + ".agsc" : ?
         ? "--- Key ---" : ? : th_exec "cat " + argv$(2) + ".agsk" : ?
         goto 9999
-                                                                                                         
+
     230 ' LIST ALL .AGS FILES
          no_files$ = "%glob: file not found"
          ? "--- Embedded files ---" : ? : th_exec "ls *.ags" ; out$ : ? th_sed$(out$, no_files$, "%no aegis files found")
@@ -386,8 +387,8 @@
          ?# 1, encryptedmsg$
          close #1
          ? : th_exec "ls " + file$ + ".agsc"
-         open file$ + ".agsk", as #1                                                                          
-         ?# 1, otp$                                                                                           
+         open file$ + ".agsk", as #1
+         ?# 1, otp$
          close #1
          th_exec "ls " + file$ + ".agsk"
          goto 9999
@@ -413,7 +414,7 @@
              ext$ = ".ags" : gosub 271
              ext$ = ".agsc" : gosub 271
              ext$ = ".agsk" : gosub 271
-             goto 9999                                                                                        
+             goto 9999
          271 th_exec "ls *" + ext$ ; out$
              if th_re( out$, "%glob" ) then ? "%no " ext$ " files found" : return
              th_exec "rm *" + ext$
